@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">Fruturity</string>
+    <string name="menu">Menu</string>
+    <string name="language">Language</string>
+    <string name="theme">Theme</string>
+    <string name="about_us">About Us</string>
+    <string name="help_center">Help Center</string>
+    <string name="hi_it_s_fruturity">Hi 👋,\nit’s Fruturity!</string>
+    <string name="tap_to_start_detecting">Tap to start detecting!</string>
+    <string name="which_delightful_fruit_graces_you_today">Which delightful fruit graces you today?</string>
+</resources>
