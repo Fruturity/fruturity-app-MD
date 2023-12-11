@@ -12,7 +12,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Favorite
@@ -132,7 +132,7 @@ fun FruturityApp(
                         }
 
                         Divider(color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.1f))
-                        Spacer(modifier = Modifier.height(8.dp))
+                        Spacer(modifier = modifier.height(8.dp))
 
                         items.forEach { item ->
                             NavigationDrawerItem(
@@ -143,7 +143,7 @@ fun FruturityApp(
                                     appState.onItemSelected(item)
                                     selectedItem.value = item
                                 },
-                                modifier = Modifier
+                                modifier = modifier
                                     .padding(horizontal = 12.dp, vertical = 8.dp)
                             )
                         }
@@ -153,8 +153,9 @@ fun FruturityApp(
             content = {
                 Column(
                     modifier = modifier
-                        .padding(top = 140.dp)
-                        .height(330.dp),
+                        .padding(top = 10.dp)
+                        .fillMaxHeight()
+                        .fillMaxWidth(),
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.Center
                 ) {
@@ -162,8 +163,8 @@ fun FruturityApp(
                         painter = painterResource(id = R.drawable.logo),
                         contentDescription = "Logo",
                         contentScale = ContentScale.Crop,
-                        modifier = Modifier
-                            .height(140.dp)
+                        modifier = modifier
+                            .height(180.dp)
                             .fillMaxWidth()
                             .padding(16.dp)
                     )
@@ -194,17 +195,23 @@ fun FruturityApp(
                             textAlign = TextAlign.Center,
                         )
                     )
-                    Box (
-                    ) {
+                    Spacer(modifier = modifier.height(8.dp))
+                    Box(
+                        modifier = modifier
+                            .size(100.dp)
+                            .clip(CircleShape)
+                            .background(MaterialTheme.colorScheme.primary)
+                        ) {
                         Image(
                             painter = painterResource(id = R.drawable.ic_scan),
                             contentDescription = "Icon Scanner",
-                            contentScale = ContentScale.None,
-                            modifier = Modifier
-                                .size(48.dp) // Adjust the size as needed
-                                .padding(top = 16.dp)
+                            contentScale = ContentScale.Crop,
+                            modifier = modifier
+                                .fillMaxSize()
+                                .clip(CircleShape)
                         )
                     }
+
                 }
             }
         )
