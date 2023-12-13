@@ -21,6 +21,25 @@ class Repository {
             }
     }
 
+    fun getFruitById(fruitId: Long): FruitHistory {
+        return fruits.first {
+            it.fruits.id == fruitId
+        }
+    }
+
+    fun updateFruit(fruitId: Long, newCountValue: Int): Flow<Boolean> {
+        val index = fruits.indexOfFirst { it.fruits.id == fruitId }
+        val result = if (index >= 0) {
+            val fruitOrders = fruits[index]
+            fruits[index] =
+                fruitOrders.copy( count = newCountValue, fruits = fruitOrders.fruits)
+            true
+        } else {
+            false
+        }
+        return flowOf(result)
+    }
+
     companion object {
         @Volatile
         private var instance: Repository? = null

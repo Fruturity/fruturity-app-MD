@@ -1,4 +1,4 @@
-package com.ardine.fruturity.ui.screen.History
+package com.ardine.fruturity.ui.screen.myStuff.history
 
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf

@@ -3,7 +3,9 @@ package com.ardine.fruturity.ui
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.ardine.fruturity.data.Repository
-import com.ardine.fruturity.ui.screen.History.HistoryViewModel
+import com.ardine.fruturity.ui.screen.myStuff.bookmark.BookmarkViewModel
+import com.ardine.fruturity.ui.screen.myStuff.detail.DetailViewModel
+import com.ardine.fruturity.ui.screen.myStuff.history.HistoryViewModel
 
 class ViewModelFactory(private val repository: Repository) :
     ViewModelProvider.NewInstanceFactory() {
@@ -13,11 +15,11 @@ class ViewModelFactory(private val repository: Repository) :
         if (modelClass.isAssignableFrom(HistoryViewModel::class.java)) {
             return HistoryViewModel(repository) as T
         }
-//        else if (modelClass.isAssignableFrom(DetailViewModel::class.java)) {
-//            return DetailViewModel(repository) as T
-//        } else if (modelClass.isAssignableFrom(CartViewModel::class.java)) {
-//            return CartViewModel(repository) as T
-//        }
+        else if (modelClass.isAssignableFrom(DetailViewModel::class.java)) {
+            return DetailViewModel(repository) as T
+        } else if (modelClass.isAssignableFrom(BookmarkViewModel::class.java)) {
+            return BookmarkViewModel(repository) as T
+        }
         throw IllegalArgumentException("Unknown ViewModel class: " + modelClass.name)
     }
 }
