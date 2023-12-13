@@ -74,11 +74,18 @@ dependencies {
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
 
-    //CAMEREA STUFF
+    //CAMEREAx STUFF
     val camerax_version = "1.4.0-alpha02"
+    implementation("androidx.camera:camera-core:$camerax_version")
     implementation ("androidx.camera:camera-camera2:$camerax_version")
     implementation ("androidx.camera:camera-lifecycle:$camerax_version")
     implementation ("androidx.camera:camera-view:$camerax_version")
     implementation ("androidx.camera:camera-extensions:$camerax_version")
+
+    //icon
+    implementation("androidx.compose.material:material-icons-extended:1.5.4")
+
+    //COIL
+    implementation("io.coil-kt:coil-compose:2.2.2")
 
 }
