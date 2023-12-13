@@ -7,5 +7,6 @@ data class Fruits(
     val description: String,
     val ripeness: String,
     val isBookmark: Boolean,
+    val date: String,
     val category: String
 )

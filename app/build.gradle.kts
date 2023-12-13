@@ -51,12 +51,12 @@ android {
 
 dependencies {
 
-    implementation ("androidx.navigation:navigation-compose:2.7.5")
+    implementation("androidx.navigation:navigation-compose:2.7.5")
     implementation("com.google.android.material:material:1.10.0")
-    androidTestImplementation ("androidx.navigation:navigation-testing:2.7.5")
+    androidTestImplementation("androidx.navigation:navigation-testing:2.7.5")
 
-    implementation ("androidx.lifecycle:lifecycle-viewmodel-compose:2.6.2")
-    implementation ("io.coil-kt:coil-compose:2.2.2")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.6.2")
+    implementation("io.coil-kt:coil-compose:2.2.2")
 
     implementation("androidx.core:core-ktx:1.12.0")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.2")
@@ -77,10 +77,10 @@ dependencies {
     //CAMEREAx STUFF
     val camerax_version = "1.4.0-alpha02"
     implementation("androidx.camera:camera-core:$camerax_version")
-    implementation ("androidx.camera:camera-camera2:$camerax_version")
-    implementation ("androidx.camera:camera-lifecycle:$camerax_version")
-    implementation ("androidx.camera:camera-view:$camerax_version")
-    implementation ("androidx.camera:camera-extensions:$camerax_version")
+    implementation("androidx.camera:camera-camera2:$camerax_version")
+    implementation("androidx.camera:camera-lifecycle:$camerax_version")
+    implementation("androidx.camera:camera-view:$camerax_version")
+    implementation("androidx.camera:camera-extensions:$camerax_version")
 
     //icon
     implementation("androidx.compose.material:material-icons-extended:1.5.4")

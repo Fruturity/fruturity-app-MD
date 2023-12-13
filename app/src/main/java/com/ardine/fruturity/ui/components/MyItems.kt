@@ -64,7 +64,6 @@ fun MyItems(
                     .clip(CircleShape)
                     .padding(start = 5.dp)
             )
-//        Spacer(modifier = Modifier.width(6.dp))
             Column(
                 modifier = Modifier
                     .padding(vertical = 14.dp, horizontal = 8.dp)

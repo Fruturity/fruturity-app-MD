@@ -1,16 +1,14 @@
-package com.ardine.fruturity.ui.screen.History
+package com.ardine.fruturity.ui.screen.myStuff.history
 
 import android.widget.Toast
-import androidx.compose.animation.core.tween
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -19,10 +17,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.testTag
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -31,6 +26,7 @@ import com.ardine.fruturity.data.ResultState
 import com.ardine.fruturity.di.Injection
 import com.ardine.fruturity.model.FruitHistory
 import com.ardine.fruturity.ui.ViewModelFactory
+import com.ardine.fruturity.ui.components.SearchBar
 
 @Composable
 fun HistoryScreen(
@@ -63,6 +59,7 @@ fun HistoryScreen(
     }
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun HistoryContent (
     fruits: List<FruitHistory>,
@@ -75,12 +72,6 @@ fun HistoryContent (
         modifier = modifier,
     ) {
         Box(modifier = modifier) {
-            Image(
-                painter = painterResource(R.drawable.fruturitylogo),
-                contentDescription = "Banner Image",
-                contentScale = ContentScale.Crop,
-                modifier = modifier.height(120.dp)
-            )
             SearchBar(
                 query = query,
                 onQueryChange = onQueryChange,
@@ -89,35 +80,31 @@ fun HistoryContent (
                     .clip(RoundedCornerShape(8.dp))
             )
         }
-        if (fruits.isEmpty()){
+        if (fruits.isEmpty()) {
             Text(
                 modifier = modifier
-                    .align(Alignment.CenterHorizontally) ,
+                    .align(Alignment.CenterHorizontally),
                 text = stringResource(R.string.empty_msg)
             )
         }
-        LazyVertical(
-            columns = GridCells.Adaptive(160.dp),
+        LazyColumn(
+            modifier = modifier,
             contentPadding = PaddingValues(16.dp),
-            horizontalArrangement = Arrangement.spacedBy(16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp),
-            modifier = modifier.testTag("FruitList")
-        ){
-
-            items(fruits, key = { it.fruits.id}) { data ->
-                Items(
-                    image = data.fruits.image,
-                    title = data.fruits.title,
-                    price = data.fruits.price,
-                    modifier = modifier
-                        .clickable { navigateToDetail(data.fruits.id) }
-                        .animateItemPlacement(tween(durationMillis = 600))
+            horizontalAlignment = Alignment.CenterHorizontally,
+        ) {
+            stickyHeader {
+                Text(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(8.dp),
+                    text = "sa"
                 )
             }
+
+//            items(fruits, key = { it.fruits.id }) { data ->
+//                MyItems(data = data, navigateToDetail = navigateToDetail)
+//            }
         }
     }
 }
-
-//@Composable
-//@Preview(showBackground = true)
-//fun HistoryCon

@@ -31,6 +31,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
@@ -56,9 +57,11 @@ fun FruturityApp(
     modifier : Modifier = Modifier
 ) {
     val appState = rememberDrawerState()
+    val (isFullAppBar, setIsFullAppBar) = remember { mutableStateOf(false) }
 
     BackPressHandler(enabled = appState.drawerState.isOpen) {
         appState.onBackPress()
+        setIsFullAppBar(false)
     }
 
     val items = listOf(
@@ -84,26 +87,36 @@ fun FruturityApp(
     val selectedItem = remember { mutableStateOf(items[0]) }
 
     Scaffold(
-        snackbarHost = { SnackbarHost(appState.snackbarHostState) },
-        floatingActionButton = {
-            Box(
-                modifier = Modifier
-                    .padding(start = 16.dp, top = 16.dp)
-                    .size(56.dp)
-            ) {
-                IconButton(
-                    onClick = {
-                        appState.onMenuClick()
-                    },
-                    modifier = Modifier.fillMaxSize()
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.Menu,
-                        contentDescription = stringResource(R.string.menu)
-                    )
-                }
-            }
+        topBar = {
+            MyTopBar(
+                onMenuClick = {
+                    appState.onMenuClick()
+                    setIsFullAppBar(!isFullAppBar)
+                },
+                isFull = isFullAppBar
+            )
         },
+
+//        snackbarHost = { SnackbarHost(appState.snackbarHostState) },
+//        floatingActionButton = {
+//            Box(
+//                modifier = Modifier
+//                    .padding(start = 16.dp, top = 16.dp)
+//                    .size(56.dp)
+//            ) {
+//                IconButton(
+//                    onClick = {
+//                        appState.onMenuClick()
+//                    },
+//                    modifier = Modifier.fillMaxSize()
+//                ) {
+//                    Icon(
+//                        imageVector = Icons.Default.Menu,
+//                        contentDescription = stringResource(R.string.menu)
+//                    )
+//                }
+//            }
+//        },
     ) { paddingValues ->
         ModalNavigationDrawer(
             modifier = Modifier.padding(paddingValues),
@@ -216,22 +229,23 @@ fun FruturityApp(
             }
         )
         LaunchedEffect(appState.drawerState.isOpen) {
-//            appState.drawerState.isOpen.collect {
-//                appState.setFabVisible(!it)
-//            }
         }
     }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MyTopBar(onMenuClick: () -> Unit, modifier: Modifier = Modifier) {
+fun MyTopBar(onMenuClick: () -> Unit, isFull: Boolean, modifier: Modifier = Modifier) {
+    val appBarHeight = if (isFull) {
+        56.dp
+    } else {
+        56.dp // Set your desired height when not full
+    }
+
     TopAppBar(
         title = {},
         navigationIcon = {
-            IconButton(onClick = {
-                onMenuClick()
-            }) {
+            IconButton(onClick = { onMenuClick() }) {
                 Icon(
                     imageVector = Icons.Default.Menu,
                     contentDescription = stringResource(R.string.menu)
@@ -239,8 +253,10 @@ fun MyTopBar(onMenuClick: () -> Unit, modifier: Modifier = Modifier) {
             }
         },
         modifier = modifier
+            .height(appBarHeight)
     )
 }
+
 
 @Preview(showBackground = true)
 @Composable
