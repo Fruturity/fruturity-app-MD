@@ -6,7 +6,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ardine.fruturity.data.Repository
 import com.ardine.fruturity.data.ResultState
-import com.ardine.fruturity.model.FruitHistory
+import com.ardine.fruturity.data.model.FruitHistory
+import com.ardine.fruturity.ui.screen.myStuff.SearchState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -18,8 +19,34 @@ class HistoryViewModel(private val repository: Repository) : ViewModel() {
     val resultState: StateFlow<ResultState<List<FruitHistory>>>
         get() = _resultState
 
-    private val _historyState = mutableStateOf(HistoryState())
-    val historyState: State<HistoryState> = _historyState
+    private val _searchState = mutableStateOf(SearchState())
+    val searchState: State<SearchState> = _searchState
+
+//    private val _groupedFruits = MutableStateFlow<Map<String, List<FruitHistory>>>(emptyMap())
+//    val groupedFruits: StateFlow<Map<String, List<FruitHistory>>> get() = _groupedFruits
+
+//    fun getAddedMarkedFruits() {
+//        viewModelScope.launch {
+//            repository.getAddedMarkedFruits()
+//                .catch { exception ->
+//                    _resultState.value = ResultState.Error(exception.message.toString())
+//                }
+//                .collect { marked ->
+//                    _resultState.value = ResultState.Success(marked)
+//                }
+//        }
+//    }
+
+    fun updateFruitMark(fruitId: Long){
+        viewModelScope.launch {
+            repository.updateFruit(fruitId)
+//                .collect { isUpdated ->
+//                    if (isUpdated) {
+//                        getAddedMarkedFruits()
+//                    }
+//                }
+        }
+    }
 
     fun getAllFruits() {
         viewModelScope.launch {
@@ -28,13 +55,14 @@ class HistoryViewModel(private val repository: Repository) : ViewModel() {
                     _resultState.value = ResultState.Error(it.message.toString())
                 }
                 .collect { order ->
+//                    _groupedFruits.value = order.groupBy { it.fruits.category }
                     _resultState.value = ResultState.Success(order)
                 }
         }
     }
 
     fun onQueryChange(query: String){
-        _historyState.value = _historyState.value.copy(query = query)
+        _searchState.value = _searchState.value.copy(query = query)
         searchFruits(query)
     }
 

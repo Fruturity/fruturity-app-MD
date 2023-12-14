@@ -88,4 +88,9 @@ dependencies {
     //COIL
     implementation("io.coil-kt:coil-compose:2.2.2")
 
+    //TABS
+    implementation("com.google.accompanist:accompanist-pager:0.17.0")
+    implementation("com.google.accompanist:accompanist-pager-indicators:0.17.0")
+
+//    implementation ("org.tensorflow:tensorflow-lite:1.7.0")
 }

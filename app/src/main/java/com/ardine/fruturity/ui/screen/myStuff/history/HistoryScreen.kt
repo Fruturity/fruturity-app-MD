@@ -1,14 +1,13 @@
 package com.ardine.fruturity.ui.screen.myStuff.history
 
 import android.widget.Toast
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -24,8 +23,9 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.ardine.fruturity.R
 import com.ardine.fruturity.data.ResultState
 import com.ardine.fruturity.di.Injection
-import com.ardine.fruturity.model.FruitHistory
+import com.ardine.fruturity.data.model.FruitHistory
 import com.ardine.fruturity.ui.ViewModelFactory
+import com.ardine.fruturity.ui.components.MyItems
 import com.ardine.fruturity.ui.components.SearchBar
 
 @Composable
@@ -36,7 +36,7 @@ fun HistoryScreen(
     ),
     navigateToDetail: (Long) -> Unit,
 ){
-    val historyState by viewModel.historyState
+    val searchState by viewModel.searchState
 
     viewModel.resultState.collectAsState(initial = ResultState.Loading).value.let { resultState ->
         when(resultState){
@@ -47,64 +47,76 @@ fun HistoryScreen(
                 HistoryContent(
                     fruits = resultState.data,
                     navigateToDetail = navigateToDetail,
-                    query = historyState.query,
+                    query = searchState.query,
                     onQueryChange = viewModel::onQueryChange,
+                    updateBookmarkStatus = {
+                        viewModel.updateFruitMark(it)
+                    },
                     modifier = modifier,
                 )
             }
             is ResultState.Error -> {
                 Toast.makeText(LocalContext.current, R.string.empty_msg, Toast.LENGTH_SHORT).show()
             }
+
+            else -> {}
         }
     }
 }
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun HistoryContent (
+//    groupedFruits: Map<String, List<FruitHistory>>,
     fruits: List<FruitHistory>,
-    modifier: Modifier = Modifier,
-    navigateToDetail: (Long) -> Unit,
     query: String,
+    navigateToDetail: (Long) -> Unit,
+    updateBookmarkStatus :(id: Long) -> Unit,
     onQueryChange: (String) -> Unit,
+    modifier: Modifier = Modifier,
 ) {
-    Column(
-        modifier = modifier,
-    ) {
-        Box(modifier = modifier) {
+
+    Column {
+        Box(
+            modifier = modifier
+                .padding(horizontal = 8.dp)
+        ) {
             SearchBar(
                 query = query,
                 onQueryChange = onQueryChange,
                 modifier = modifier
-                    .padding(16.dp)
                     .clip(RoundedCornerShape(8.dp))
             )
         }
-        if (fruits.isEmpty()) {
-            Text(
-                modifier = modifier
-                    .align(Alignment.CenterHorizontally),
-                text = stringResource(R.string.empty_msg)
-            )
-        }
-        LazyColumn(
-            modifier = modifier,
-            contentPadding = PaddingValues(16.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
-        ) {
-            stickyHeader {
+            if (fruits.isEmpty()) {
                 Text(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(8.dp),
-                    text = "sa"
+                    modifier = modifier,
+                    text = stringResource(R.string.empty_msg)
                 )
+            } else {
+                LazyColumn(
+                    modifier = modifier,
+                    contentPadding = PaddingValues(16.dp),
+                    verticalArrangement = Arrangement.spacedBy(16.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                ) {
+    //                fruits.forEach { items ->
+    //                    stick/yHeader {
+    //                        Text(text = items.fruits.category, modifier = Modifier.fillMaxWidth())
+    //                    }
+                        items(fruits) { items ->
+                            MyItems(
+                                fruitsId = items.fruits.id ,
+                                ripeness = items.fruits.ripeness,
+                                imageUrl = items.fruits.imageUrl,
+                                category = items.fruits.category,
+                                date = items.fruits.date,
+                                bookmarkStatus = items.fruits.isBookmark,
+                                updateBookmarkStatus = updateBookmarkStatus,
+                            )
+                        }
+    //                }
+                }
             }
 
-//            items(fruits, key = { it.fruits.id }) { data ->
-//                MyItems(data = data, navigateToDetail = navigateToDetail)
-//            }
-        }
     }
 }
