@@ -1,7 +1,9 @@
 package com.ardine.fruturity
 
+import android.content.Intent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -19,6 +21,7 @@ import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material3.Button
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -39,7 +42,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
@@ -50,6 +55,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.ardine.fruturity.data.MenuItem
 import com.ardine.fruturity.handler.BackPressHandler
+import com.ardine.fruturity.ui.screen.camera.CameraxActivity
 import com.ardine.fruturity.ui.theme.FruturityTheme
 
 @Composable
@@ -172,6 +178,7 @@ fun FruturityApp(
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.Center
                 ) {
+
                     Image(
                         painter = painterResource(id = R.drawable.logo),
                         contentDescription = "Logo",
@@ -181,6 +188,7 @@ fun FruturityApp(
                             .fillMaxWidth()
                             .padding(16.dp)
                     )
+
                     Text(
                         text = stringResource(R.string.hi_it_s_fruturity),
                         style = TextStyle(
@@ -215,14 +223,37 @@ fun FruturityApp(
                             .clip(CircleShape)
                             .background(MaterialTheme.colorScheme.primary)
                         ) {
-                        Image(
-                            painter = painterResource(id = R.drawable.ic_scan),
-                            contentDescription = "Icon Scanner",
-                            contentScale = ContentScale.Crop,
-                            modifier = modifier
-                                .fillMaxSize()
-                                .clip(CircleShape)
-                        )
+//                        Image(
+//                            painter = painterResource(id = R.drawable.ic_scan),
+//                            contentDescription = "Icon Scanner",
+//                            contentScale = ContentScale.Crop,
+//                            modifier = modifier
+//                                .fillMaxSize()
+//                                .clip(CircleShape)
+//                        )
+
+                        ///
+
+                        val mCOntext = LocalContext.current
+                        Button(
+                            onClick = {
+                                mCOntext.startActivity(Intent(mCOntext, CameraxActivity::class.java))
+                            },
+                            shape = CircleShape
+                        ) {
+//                            Text(text = "start detection")
+                            Image(
+                                painter = painterResource(id = R.drawable.ic_scan),
+                                contentDescription = null ,
+                                modifier = Modifier
+                                    .fillMaxWidth(2f)
+                                    .fillMaxHeight(2f)
+                                    .size(100.dp)
+                            )
+
+                        }
+                        ///
+
                     }
 
                 }

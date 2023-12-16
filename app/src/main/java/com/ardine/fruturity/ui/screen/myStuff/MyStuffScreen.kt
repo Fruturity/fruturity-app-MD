@@ -70,7 +70,7 @@ fun MyStuffScreen(
                 selectedTabIndex = pagerState.currentPage,
                 indicator = {
                     TabRowDefaults.Indicator(
-                        modifier = modifier.tabIndicatorOffset(tabPostions[pagerState.currentPage]),
+                       // modifier = modifier.tabIndicatorOffset(tabPostions[pagerState.currentPage]),
                         height = 2.dp,
                     )
                 }
