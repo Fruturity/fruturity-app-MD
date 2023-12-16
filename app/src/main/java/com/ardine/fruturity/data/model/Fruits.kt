@@ -1,8 +1,8 @@
-package com.ardine.fruturity.model
+package com.ardine.fruturity.data.model
 
 data class Fruits(
     val id: Long,
-    val imageUrl: String, // This should be a Drawable resource ID, not an Int
+    val imageUrl: String,
     val title: String,
     val description: String,
     val ripeness: String,

@@ -17,103 +17,105 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.compose.rememberImagePainter
+import coil.transform.CircleCropTransformation
 import com.ardine.fruturity.R
-import com.ardine.fruturity.ui.theme.FruturityTheme
 
 @Composable
 fun MyItems(
-    fruitsId : Long,
-    ripeness : String,
-    image : Int,
-    category : String,
-    detetcted : String,
-    onClick : () -> Unit,
-    bookmarkStatus : Boolean,
-    updateBookmarkStatus : () -> Unit,
-    modifier : Modifier= Modifier
-){
-    Card (
+    fruitsId: Long,
+    ripeness: String,
+    imageUrl: String,
+    category: String,
+    date: String,
+    bookmarkStatus: Boolean,
+    updateBookmarkStatus: (id :Long) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    Card(
         shape = MaterialTheme.shapes.medium,
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.primary
         ),
         modifier = modifier
-            .padding(8.dp)
-            .shadow(2.dp)
+            .padding(4.dp)
     ) {
         Row(
             modifier = Modifier
                 .padding(8.dp)
                 .fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically
-            // .clip(shape = RoundedCornerShape(5.dp))
         ) {
-
             Image(
-                painter = painterResource(image),
+                painter = rememberImagePainter(
+                    data = imageUrl,
+                    builder = {
+                        transformations(CircleCropTransformation())
+                    }
+                ),
                 contentDescription = null,
-                //  alignment = Alignment.CenterStart,
                 modifier = Modifier
-                    .size(80.dp)
+                    .size(60.dp)
                     .clip(CircleShape)
-                    .padding(start = 5.dp)
             )
             Column(
                 modifier = Modifier
-                    .padding(vertical = 14.dp, horizontal = 8.dp)
+                    .weight(1f)
+                    .padding(horizontal = 8.dp)
             ) {
                 Text(
-                    text = "Ripeness\"$ripeness\"",
-                    fontSize = 24.sp,
-                    fontWeight = FontWeight.Medium
+                    text = "Ripeness: $ripeness",
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.Medium,
+                    modifier = Modifier.padding(vertical = 8.dp)
                 )
                 Text(
-                    text = "Category : \"$category\"",
+                    text = "Category : $category",
                     fontSize = 12.sp,
                     fontWeight = FontWeight.Normal
                 )
                 Text(
-                    text = "Detected on : $detetcted ",
+                    text = "Detected on : $date ",
                     fontSize = 12.sp,
                     fontWeight = FontWeight.Normal,
-                    color = MaterialTheme.colorScheme.secondaryContainer
-
+                    color = MaterialTheme.colorScheme.secondaryContainer,
+                    modifier = modifier.padding(vertical = 2.dp)
                 )
             }
 
-            IconButton(onClick = updateBookmarkStatus) {
+            IconButton(
+                onClick = { updateBookmarkStatus(fruitsId) }
+            ) {
                 Icon(
                     painter = if (bookmarkStatus) {
                         painterResource(R.drawable.ic_bookmarked_white)
                     } else {
                         painterResource(R.drawable.ic_bookmark_white)
                     },
-                    contentDescription = null,
+                    contentDescription = "Bookmark Icon",
                 )
             }
         }
     }
 }
 
-@Preview(showBackground = true)
-@Composable
-fun HistoryItemPreview(){
-    FruturityTheme {
-        MyItems(
-            fruitsId = 0,
-            ripeness = "matang" ,
-            image = R.drawable.image_test,
-            category = "banana" ,
-            detetcted = "12/01/2003",
-            onClick = {},
-            bookmarkStatus = false,
-            updateBookmarkStatus = {}
-        )
-    }
-}
+//@Preview(showBackground = true)
+//@Composable
+//fun HistoryItemPreview(){
+//    FruturityTheme {
+//        MyItems(
+//            fruitsId = 0,
+//            ripeness = "matang" ,
+//            image = R.drawable.image_test,
+//            category = "banana" ,
+//            date = "12/01/2003",
+////            onClick = {},
+//            bookmarkStatus = false,
+//            updateBookmarkStatus = {}
+//        )
+//    }
+//}
