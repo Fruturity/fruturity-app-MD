@@ -4,8 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ardine.fruturity.data.Repository
 import com.ardine.fruturity.data.ResultState
-import com.ardine.fruturity.model.FruitHistory
-import com.ardine.fruturity.model.Fruits
+import com.ardine.fruturity.data.model.FruitHistory
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -23,9 +22,9 @@ class DetailViewModel(private val repository: Repository) : ViewModel() {
         }
     }
 
-    fun addBookmark (fruit: Fruits, count: Int) {
-        viewModelScope.launch {
-            repository.updateFruit(fruit.id, count)
-        }
-    }
+//    fun addBookmark (fruit: Fruits, count: Int) {
+//        viewModelScope.launch {
+//            repository.updateFruit(fruit.id, count)
+//        }
+//    }
 }
