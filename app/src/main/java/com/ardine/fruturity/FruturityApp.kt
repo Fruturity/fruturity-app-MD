@@ -26,6 +26,7 @@ import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material.icons.outlined.Inventory2
 import androidx.compose.material.icons.outlined.Language
+import androidx.compose.material3.Button
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.DrawerValue
 
@@ -62,6 +63,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.ardine.fruturity.data.MenuItem
+import com.ardine.fruturity.ui.screen.camera.CameraxActivity
 
 import com.ardine.fruturity.ui.screen.myStuff.MyStuffScreen
 
@@ -267,14 +269,32 @@ fun HomeContent(
                 .clip(CircleShape)
                 .background(MaterialTheme.colorScheme.primary)
         ) {
-            Image(
-                painter = painterResource(id = R.drawable.ic_scan),
-                contentDescription = "Icon Scanner",
-                contentScale = ContentScale.Crop,
-                modifier = modifier
-                    .fillMaxSize()
-                    .clip(CircleShape)
-            )
+//            Image(
+//                painter = painterResource(id = R.drawable.ic_scan),
+//                contentDescription = "Icon Scanner",
+//                contentScale = ContentScale.Crop,
+//                modifier = modifier
+//                    .fillMaxSize()
+//                    .clip(CircleShape)
+//            )
+            val mCOntext = LocalContext.current
+            Button(
+                onClick = {
+                    mCOntext.startActivity(Intent(mCOntext, CameraxActivity::class.java))
+                },
+                shape = CircleShape
+            ) {
+//                            Text(text = "start detection")
+                Image(
+                    painter = painterResource(id = R.drawable.ic_scan),
+                    contentDescription = null ,
+                    modifier = Modifier
+                        .fillMaxWidth(2f)
+                        .fillMaxHeight(2f)
+                        .size(100.dp)
+                )
+
+            }
         }
 
     }
