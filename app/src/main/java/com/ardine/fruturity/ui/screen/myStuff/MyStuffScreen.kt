@@ -58,6 +58,7 @@ fun MyStuffScreen(
                     .padding(paddingValues)
             ) {
             TabRow(
+
                 selectedTabIndex = tabIndex,
                 ) {
                     tabs.forEachIndexed { index, title ->
@@ -66,6 +67,7 @@ fun MyStuffScreen(
                             onClick = { tabIndex = index }
                         )
                     }
+
                 }
                 when (tabIndex) {
                     0 -> HistoryScreen(
