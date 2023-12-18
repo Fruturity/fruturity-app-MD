@@ -1,4 +1,4 @@
-package com.ardine.fruturity
+package com.ardine.fruturity.handler
 
 import android.content.Context
 import androidx.compose.material3.DrawerState
@@ -62,7 +62,7 @@ fun rememberDrawerState(
     coroutinesScope: CoroutineScope = rememberCoroutineScope(),
     snackbarHostState: SnackbarHostState = remember { SnackbarHostState() },
     context: Context = LocalContext.current,
-): com.ardine.fruturity.DrawerState =
+): com.ardine.fruturity.handler.DrawerState =
     remember(drawerState, coroutinesScope, snackbarHostState, context) {
         DrawerState(drawerState, coroutinesScope, snackbarHostState, context)
     }

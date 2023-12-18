@@ -1,4 +1,4 @@
-package com.ardine.fruturity.data.model
+package com.ardine.fruturity.data.response
 
 data class FruitHistory (
     val fruits: Fruits,

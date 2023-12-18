@@ -2,27 +2,22 @@ package com.ardine.fruturity
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.DarkMode
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Inventory2
-import androidx.compose.material.icons.filled.Language
 import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material.icons.outlined.DarkMode
 import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material.icons.outlined.Inventory2
-import androidx.compose.material.icons.outlined.Language
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -43,20 +38,19 @@ import androidx.compose.runtime.setValue
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
 import com.ardine.fruturity.data.MenuItem
+import com.ardine.fruturity.ui.screen.Home.HomeScreen
 import com.ardine.fruturity.ui.screen.myStuff.MyStuffScreen
+import com.ardine.fruturity.ui.screen.myStuff.detail.DetailScreen
+import com.ardine.fruturity.ui.screen.myStuff.history.HistoryScreen
 import com.ardine.fruturity.ui.theme.FruturityTheme
 import kotlinx.coroutines.launch
 
@@ -65,13 +59,26 @@ import kotlinx.coroutines.launch
 fun FruturityApp(
     modifier : Modifier = Modifier
 ) {
-//    val appState = rememberDrawerState()
-//    val (isFullAppBar, setIsFullAppBar) = remember { mutableStateOf(false) }
-
-//    BackPressHandler(enabled = appState.drawerState.isOpen) {
-//        appState.onBackPress()
-//        setIsFullAppBar(false)
-//    }
+    val navController = rememberNavController()
+    NavHost(
+        navController = navController,
+        startDestination = "home"
+    ){
+        composable("home"){
+            HomeScreen()
+        }
+        composable("history"){
+            HistoryScreen(
+                navigateToDetail = { fruitId ->
+                    navController.navigate("detail/$fruitId")
+                }
+            )
+        }
+        composable("detail/{fruitId}"){
+            val fruitId = it.arguments?.getString("fruitId") ?: ""
+            DetailScreen(fruitId = fruitId)
+        }
+    }
 
     val items = listOf(
         MenuItem(
@@ -85,9 +92,9 @@ fun FruturityApp(
             unselectedIcon = Icons.Outlined.Inventory2
         ),
         MenuItem(
-            title = "Language",
-            selectedIcon = Icons.Default.Language,
-            unselectedIcon = Icons.Outlined.Language
+            title = "Themes",
+            selectedIcon = Icons.Default.DarkMode,
+            unselectedIcon = Icons.Outlined.DarkMode
         ),
         MenuItem(
             title = "About Us",
@@ -129,7 +136,6 @@ fun FruturityApp(
                             },
                             selected = index == selectedItemIndex,
                             onClick = {
-//                              navController.navigate(item.route)
                                 selectedItemIndex = index
                                 scope.launch {
                                     drawerState.close()
@@ -184,13 +190,13 @@ fun FruturityApp(
                     ) {
                         when (selectedItemIndex) {
                             0 -> {
-                                HomeContent()
+                                HomeScreen()
                             }
                             1 -> {
                                 MyStuffScreen()
                             }
                             2 -> {
-                                Text(text = "Language Content")
+                                Text(text = "Themes Content")
                             }
                             3 -> {
                                 Text(text = "About Us Content")
@@ -200,74 +206,6 @@ fun FruturityApp(
                 },
             )
         }
-    }
-}
-
-@Composable
-fun HomeContent(
-    modifier: Modifier = Modifier
-) {
-    Column(
-        modifier = modifier
-            .padding(top = 10.dp)
-            .fillMaxHeight()
-            .fillMaxWidth(),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
-    ) {
-        Image(
-            painter = painterResource(id = R.drawable.logo),
-            contentDescription = "Logo",
-            contentScale = ContentScale.Crop,
-            modifier = modifier
-                .height(180.dp)
-                .fillMaxWidth()
-                .padding(16.dp)
-        )
-        Text(
-            text = stringResource(R.string.hi_it_s_fruturity),
-            style = TextStyle(
-                fontSize = 24.sp,
-                fontWeight = FontWeight(400),
-                color = MaterialTheme.colorScheme.primary,
-                textAlign = TextAlign.Center,
-            )
-        )
-        Text(
-            text = stringResource(R.string.which_delightful_fruit_graces_you_today),
-            style = TextStyle(
-                fontSize = 16.sp,
-                fontWeight = FontWeight(400),
-                color = MaterialTheme.colorScheme.primary,
-                textAlign = TextAlign.Center,
-            )
-        )
-        Text(
-            text = stringResource(R.string.tap_to_start_detecting),
-            style = TextStyle(
-                fontSize = 20.sp,
-                fontWeight = FontWeight(700),
-                color = MaterialTheme.colorScheme.primary,
-                textAlign = TextAlign.Center,
-            )
-        )
-        Spacer(modifier = modifier.height(8.dp))
-        Box(
-            modifier = modifier
-                .size(100.dp)
-                .clip(CircleShape)
-                .background(MaterialTheme.colorScheme.primary)
-        ) {
-            Image(
-                painter = painterResource(id = R.drawable.ic_scan),
-                contentDescription = "Icon Scanner",
-                contentScale = ContentScale.Crop,
-                modifier = modifier
-                    .fillMaxSize()
-                    .clip(CircleShape)
-            )
-        }
-
     }
 }
 
