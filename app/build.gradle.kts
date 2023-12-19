@@ -51,12 +51,13 @@ android {
 
 dependencies {
 
-    implementation ("androidx.navigation:navigation-compose:2.7.5")
+    implementation("androidx.navigation:navigation-compose:2.7.5")
     implementation("com.google.android.material:material:1.10.0")
-    androidTestImplementation ("androidx.navigation:navigation-testing:2.7.5")
+    implementation(platform("androidx.compose:compose-bom:2023.03.00"))
+    androidTestImplementation("androidx.navigation:navigation-testing:2.7.5")
 
-    implementation ("androidx.lifecycle:lifecycle-viewmodel-compose:2.6.2")
-    implementation ("io.coil-kt:coil-compose:2.2.2")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.6.2")
+    implementation("io.coil-kt:coil-compose:2.2.2")
 
     implementation("androidx.core:core-ktx:1.12.0")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.2")
@@ -71,6 +72,27 @@ dependencies {
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
     androidTestImplementation(platform("androidx.compose:compose-bom:2023.03.00"))
     androidTestImplementation("androidx.compose.ui:ui-test-junit4")
+    androidTestImplementation(platform("androidx.compose:compose-bom:2023.03.00"))
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
+
+    //CAMEREAx STUFF
+    val camerax_version = "1.4.0-alpha02"
+    implementation("androidx.camera:camera-core:$camerax_version")
+    implementation("androidx.camera:camera-camera2:$camerax_version")
+    implementation("androidx.camera:camera-lifecycle:$camerax_version")
+    implementation("androidx.camera:camera-view:$camerax_version")
+    implementation("androidx.camera:camera-extensions:$camerax_version")
+
+    //icon
+    implementation("androidx.compose.material:material-icons-extended:1.5.4")
+
+    //COIL
+    implementation("io.coil-kt:coil-compose:2.2.2")
+
+    //TABS
+    implementation("com.google.accompanist:accompanist-pager:0.17.0")
+    implementation("com.google.accompanist:accompanist-pager-indicators:0.17.0")
+
+//    implementation ("org.tensorflow:tensorflow-lite:1.7.0")
 }

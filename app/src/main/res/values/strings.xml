@@ -8,4 +8,17 @@
     <string name="hi_it_s_fruturity">Hi 👋,\nit’s Fruturity!</string>
     <string name="tap_to_start_detecting">Tap to start detecting!</string>
     <string name="which_delightful_fruit_graces_you_today">Which delightful fruit graces you today?</string>
+    <string name="placeholder_search">Search Fruit</string>
+    <string name="empty_msg">Nothing to Display</string>
+    <string name="back">Back</string>
+    <string name="ripeness">Very Ripe</string>
+
+    <string name="title_activity_camerax">CameraxActivity</string>
+
+    <string name="history">History</string>
+    <string name="mystuff">My Stuff</string>
+
+
+    <!-- Detail -->
+
 </resources>
