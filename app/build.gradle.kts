@@ -39,6 +39,8 @@ android {
     buildFeatures {
         compose = true
         mlModelBinding = true
+        buildConfig = true
+
     }
     composeOptions {
         kotlinCompilerExtensionVersion = "1.4.3"
@@ -101,9 +103,30 @@ dependencies {
     implementation("com.google.accompanist:accompanist-pager:0.17.0")
     implementation("com.google.accompanist:accompanist-pager-indicators:0.17.0")
 
+    // Retrofit
+    implementation("com.github.bumptech.glide:glide:4.16.0")
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+    implementation("com.squareup.retrofit2:converter-moshi:2.9.0")
+    implementation("com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.3")
+
+    // Dagger Hilt
+//    implementation("com.google.dagger:hilt-android:2.48")
+//    kapt("com.google.dagger:hilt-android-compiler:2.45")
+//    kapt("androidx.hilt:hilt-compiler:1.1.0")
+//    implementation("androidx.hilt:hilt-navigation-compose:1.1.0")
+
+    // Navigation
+    implementation("androidx.navigation:navigation-compose:2.7.6")
+
+    // Room
+    implementation("androidx.room:room-ktx:2.6.1")
+//    kapt("androidx.room:room-compiler:2.6.1")
+    implementation("androidx.room:room-paging:2.6.1")
+
+    //TENSOR FLOW LITE
     implementation ("org.tensorflow:tensorflow-lite:2.8.0")
 
     implementation ("org.tensorflow:tensorflow-lite-support:0.1.0")
     implementation ("org.tensorflow:tensorflow-lite-metadata:0.1.0")
-
 }
