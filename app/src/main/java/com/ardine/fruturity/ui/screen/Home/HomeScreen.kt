@@ -1,5 +1,6 @@
 package com.ardine.fruturity.ui.screen.Home
 
+import android.content.Intent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -29,6 +30,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.ardine.fruturity.R
+import com.ardine.fruturity.ui.screen.camera.CameraxActivity
 
 @Composable
 fun HomeScreen (
@@ -96,7 +98,7 @@ fun HomeScreen (
             val mCOntext = LocalContext.current
             Button(
                 onClick = {
-//                    mCOntext.startActivity(Intent(mCOntext, CameraxActivity::class.java))
+                   mCOntext.startActivity(Intent(mCOntext, CameraxActivity::class.java))
                 },
                 shape = CircleShape
             ) {
