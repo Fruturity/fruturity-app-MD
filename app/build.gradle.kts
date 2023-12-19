@@ -43,6 +43,7 @@ android {
     buildFeatures {
         compose = true
         buildConfig = true
+        mlModelBinding = true
     }
     composeOptions {
         kotlinCompilerExtensionVersion = "1.4.3"
@@ -118,4 +119,10 @@ dependencies {
     implementation("androidx.room:room-ktx:2.6.1")
 //    kapt("androidx.room:room-compiler:2.6.1")
     implementation("androidx.room:room-paging:2.6.1")
+
+    //TENSOR FLOW LITE
+    implementation ("org.tensorflow:tensorflow-lite:2.8.0")
+
+    implementation ("org.tensorflow:tensorflow-lite-support:0.1.0")
+    implementation ("org.tensorflow:tensorflow-lite-metadata:0.1.0")
 }

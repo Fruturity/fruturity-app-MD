@@ -1,5 +1,6 @@
 package com.ardine.fruturity.ui.screen.camera
 
+
 import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -41,44 +42,44 @@ fun CameraScreen(
             imageUri = uri
         }
     )
-    Box(
-        modifier = modifier
-    ){
+   Box(
+       modifier = modifier
+   ){
 
-        if (hasImage && imageUri != null){
-            AsyncImage(
-                model = imageUri ,
-                contentDescription = "select image",
-                modifier = Modifier
-                    .fillMaxWidth()
-            )
-        }
-        Column(
-            modifier = Modifier
-                .align(Alignment.Center)
-                .padding(bottom = 32.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
+       if (hasImage && imageUri != null){
+           AsyncImage(
+               model = imageUri ,
+               contentDescription = "select image",
+               modifier = Modifier
+                   .fillMaxWidth()
+               )
+       }
+       Column(
+           modifier = Modifier
+               .align(Alignment.Center)
+               .padding(bottom = 32.dp),
+           horizontalAlignment = Alignment.CenterHorizontally
+       ) {
 
-            Button(
-                onClick = {
-                    imagePicker.launch("image/*")
-                },
-            ) {
-                Text(
-                    text = "Select Image"
-                )
-            }
-            Button(
-                modifier = Modifier.padding(top = 16.dp),
-                onClick = { /* TODO */ },
-            ) {
-                Text(
-                    text = "Take photo"
-                )
-            }
-        }
-    }
+           Button(
+               onClick = {
+                         imagePicker.launch("image/*")
+               },
+           ) {
+               Text(
+                   text = "Select Image"
+               )
+           }
+           Button(
+               modifier = Modifier.padding(top = 16.dp),
+               onClick = { /* TODO */ },
+           ) {
+               Text(
+                   text = "Take photo"
+               )
+           }
+       }
+   }
 }
 
 @Preview(showBackground = true, device = Devices.NEXUS_6P)
@@ -88,4 +89,5 @@ fun ButtonPreview(){
         CameraScreen()
     }
 }
+
 
