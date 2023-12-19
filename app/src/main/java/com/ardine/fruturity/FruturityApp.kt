@@ -1,238 +1,155 @@
 package com.ardine.fruturity
 
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
-import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.Info
-import androidx.compose.material.icons.filled.Menu
-import androidx.compose.material3.Divider
-import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.ModalDrawerSheet
-import androidx.compose.material3.ModalNavigationDrawer
-import androidx.compose.material3.NavigationDrawerItem
+import androidx.compose.material3.NavigationBar
+import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.ui.Alignment
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import com.ardine.fruturity.data.MenuItem
-import com.ardine.fruturity.handler.BackPressHandler
+import androidx.navigation.NavGraph.Companion.findStartDestination
+import androidx.navigation.NavHostController
+import androidx.navigation.NavType
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
+import com.ardine.fruturity.ui.navigation.NavigationItem
+import com.ardine.fruturity.ui.screen.Home.HomeScreen
+import com.ardine.fruturity.ui.screen.bookmark.BookmarkScreen
+import com.ardine.fruturity.ui.screen.detail.DetailScreen
+import com.ardine.fruturity.ui.screen.history.HistoryScreen
 import com.ardine.fruturity.ui.theme.FruturityTheme
 
 @Composable
 fun FruturityApp(
-    modifier : Modifier = Modifier
+    modifier: Modifier = Modifier,
+    navController: NavHostController = rememberNavController(),
 ) {
-    val appState = rememberDrawerState()
-
-    BackPressHandler(enabled = appState.drawerState.isOpen) {
-        appState.onBackPress()
-    }
-
-    val items = listOf(
-        MenuItem(
-            title = stringResource(R.string.language),
-            icon = Icons.Default.Home,
-            text = "English"
-        ),
-        MenuItem(
-            title = stringResource(R.string.theme),
-            icon = Icons.Default.Favorite
-        ),
-        MenuItem(
-            title = stringResource(R.string.about_us),
-            icon = Icons.Default.Info
-        ),
-        MenuItem(
-            title = stringResource(R.string.help_center),
-            icon = Icons.Default.AccountCircle
-        ),
-    )
-
-    val selectedItem = remember { mutableStateOf(items[0]) }
+    val navBackStackEntry by navController.currentBackStackEntryAsState()
+    val currentRoute = navBackStackEntry?.destination?.route
+    val isDetailScreen = currentRoute?.startsWith(Screen.ItemType.HISTORY.route) == true ||
+            currentRoute?.startsWith(Screen.ItemType.BOOKMARK.route) == true
 
     Scaffold(
-        snackbarHost = { SnackbarHost(appState.snackbarHostState) },
-        floatingActionButton = {
-            Box(
-                modifier = Modifier
-                    .padding(start = 16.dp, top = 16.dp)
-                    .size(56.dp)
-            ) {
-                IconButton(
-                    onClick = {
-                        appState.onMenuClick()
-                    },
-                    modifier = Modifier.fillMaxSize()
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.Menu,
-                        contentDescription = stringResource(R.string.menu)
-                    )
-                }
-            }
+        topBar = {
+
         },
-    ) { paddingValues ->
-        ModalNavigationDrawer(
-            modifier = Modifier.padding(paddingValues),
-            drawerState = appState.drawerState,
-            gesturesEnabled = true,
-            drawerContent = {
-                ModalDrawerSheet {
-                    Column (
-                        modifier = Modifier
-                            .fillMaxHeight()
-                            .background(MaterialTheme.colorScheme.primary)
-                    ){
-                        Box(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .height(180.dp)
-                        ) {
-                            Image(
-                                painter = painterResource(id = R.drawable.logo),
-                                contentDescription = "Logo",
-                                contentScale = ContentScale.Crop,
-                                modifier = Modifier
-                                    .fillMaxSize()
-                                    .padding(16.dp)
-                            )
-                        }
-
-                        Divider(color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.1f))
-                        Spacer(modifier = Modifier.height(8.dp))
-
-                        items.forEach { item ->
-                            NavigationDrawerItem(
-                                icon = { Icon(item.icon, contentDescription = null) },
-                                label = { Text(item.title) },
-                                selected = item == selectedItem.value,
-                                onClick = {
-                                    appState.onItemSelected(item)
-                                    selectedItem.value = item
-                                },
-                                modifier = Modifier
-                                    .padding(horizontal = 12.dp, vertical = 8.dp)
-                            )
-                        }
-                    }
-                }
-            },
-            content = {
-                Column(
-                    modifier = modifier
-                        .padding(top = 140.dp)
-                        .height(330.dp),
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.Center
-                ) {
-                    Image(
-                        painter = painterResource(id = R.drawable.logo),
-                        contentDescription = "Logo",
-                        contentScale = ContentScale.Crop,
-                        modifier = Modifier
-                            .height(140.dp)
-                            .fillMaxWidth()
-                            .padding(16.dp)
-                    )
-                    Text(
-                        text = stringResource(R.string.hi_it_s_fruturity),
-                        style = TextStyle(
-                            fontSize = 24.sp,
-                            fontWeight = FontWeight(400),
-                            color = MaterialTheme.colorScheme.primary,
-                            textAlign = TextAlign.Center,
-                        )
-                    )
-                    Text(
-                        text = stringResource(R.string.which_delightful_fruit_graces_you_today),
-                        style = TextStyle(
-                            fontSize = 16.sp,
-                            fontWeight = FontWeight(400),
-                            color = MaterialTheme.colorScheme.primary,
-                            textAlign = TextAlign.Center,
-                        )
-                    )
-                    Text(
-                        text = stringResource(R.string.tap_to_start_detecting),
-                        style = TextStyle(
-                            fontSize = 20.sp,
-                            fontWeight = FontWeight(700),
-                            color = MaterialTheme.colorScheme.primary,
-                            textAlign = TextAlign.Center,
-                        )
-                    )
-                    Box (
-                    ) {
-                        Image(
-                            painter = painterResource(id = R.drawable.ic_scan),
-                            contentDescription = "Icon Scanner",
-                            contentScale = ContentScale.None,
-                            modifier = Modifier
-                                .size(48.dp) // Adjust the size as needed
-                                .padding(top = 16.dp)
-                        )
-                    }
-                }
-            }
-        )
-        LaunchedEffect(appState.drawerState.isOpen) {
-//            appState.drawerState.isOpen.collect {
-//                appState.setFabVisible(!it)
+        bottomBar = {
+//            if (!isDetailScreen) {
+                BottomBar(navController)
 //            }
+        },
+        modifier = modifier
+    ) { innerPadding ->
+        NavHost(
+            navController = navController,
+            startDestination = Screen.Home.route,
+            modifier = modifier
+                .padding(innerPadding)
+        ) {
+            composable(Screen.Home.route){
+                HomeScreen()
+            }
+            composable(Screen.History.route){
+                HistoryScreen(
+                    navigateToDetail = { fruitId ->
+                        navController.navigate(Screen.Detail.createRoute(Screen.ItemType.HISTORY, fruitId))
+                    }
+                )
+            }
+            composable(Screen.Bookmark.route){
+                BookmarkScreen(
+                    navigateToDetail = { fruitId ->
+                        navController.navigate(Screen.Detail.createRoute(Screen.ItemType.BOOKMARK, fruitId))
+                    }
+                )
+            }
+            composable(
+                route = "${Screen.ItemType.HISTORY.route}/{fruitId}",
+                arguments = listOf(navArgument("fruitId") { type = NavType.StringType }),
+            ) {
+                val id = it.arguments?.getString("fruitId") ?: ""
+                DetailScreen(
+                    fruitId = id,
+                    navigateBack = {
+                        navController.navigateUp()
+                    }
+                )
+            }
+            composable(
+                route = "${Screen.ItemType.BOOKMARK.route}/{fruitId}",
+                arguments = listOf(navArgument("fruitId") { type = NavType.StringType }),
+            ) {
+                val id = it.arguments?.getString("fruitId") ?: ""
+                DetailScreen(
+                    fruitId = id,
+                    navigateBack = {
+                        navController.navigateUp()
+                    }
+                )
+            }
         }
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MyTopBar(onMenuClick: () -> Unit, modifier: Modifier = Modifier) {
-    TopAppBar(
-        title = {},
-        navigationIcon = {
-            IconButton(onClick = {
-                onMenuClick()
-            }) {
-                Icon(
-                    imageVector = Icons.Default.Menu,
-                    contentDescription = stringResource(R.string.menu)
-                )
-            }
-        },
+private fun BottomBar(
+    navController: NavHostController,
+    modifier: Modifier = Modifier
+) {
+    NavigationBar (
         modifier = modifier
-    )
+    ){
+        val navBackStackEntry by navController.currentBackStackEntryAsState()
+        val currentRoute = navBackStackEntry?.destination?.route
+        val navigationItems = listOf(
+            NavigationItem(
+                title = "Home",
+                icon = Icons.Default.Home,
+                screen = Screen.Home
+            ),
+            NavigationItem(
+                title = "History",
+                icon = Icons.Default.ShoppingCart,
+                screen = Screen.History
+            ),
+            NavigationItem(
+                title = "Bookmark",
+                icon = Icons.Default.AccountCircle,
+                screen = Screen.Bookmark
+            )
+        )
+        navigationItems.map { item ->
+            NavigationBarItem(
+                icon = {
+                    Icon(
+                        imageVector = item.icon,
+                        contentDescription = item.title
+                    )
+                },
+                label = { Text(item.title) },
+                selected = currentRoute == item.screen.route,
+                onClick = {
+                    navController.navigate(item.screen.route){
+                        popUpTo(navController.graph.findStartDestination().id){
+                            saveState = true
+                        }
+                        restoreState = true
+                        launchSingleTop = true
+                    }
+                }
+            )
+        }
+    }
 }
 
 @Preview(showBackground = true)
