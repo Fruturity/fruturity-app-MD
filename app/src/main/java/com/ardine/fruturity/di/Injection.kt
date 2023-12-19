@@ -1,9 +1,11 @@
 package com.ardine.fruturity.di
 
-import com.ardine.fruturity.data.Repository
+import com.ardine.fruturity.data.api.ApiConfig
+import com.ardine.fruturity.data.repositories.Repository
 
 object Injection {
     fun provideRepository(): Repository {
-        return Repository.getInstance()
+        val apiService = ApiConfig.getApiService()
+        return Repository.getInstance(apiService)
     }
 }

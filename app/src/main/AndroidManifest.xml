@@ -24,9 +24,6 @@
             android:label="@string/title_activity_result"
             android:theme="@style/Theme.Fruturity" />
         <activity
-            android:name=".ui.screen.test.TestActivity"
-            android:exported="false" />
-        <activity
             android:name=".ui.screen.camera.ImageClasificationActivity"
             android:exported="false"
             android:label="@string/title_activity_image_clasification"
