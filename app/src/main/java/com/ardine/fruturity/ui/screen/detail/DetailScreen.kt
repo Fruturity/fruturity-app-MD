@@ -1,4 +1,4 @@
-package com.ardine.fruturity.ui.screen.myStuff.detail
+package com.ardine.fruturity.ui.screen.detail
 
 import android.widget.Toast
 import androidx.compose.foundation.Image
@@ -45,7 +45,7 @@ fun DetailScreen(
             Injection.provideRepository()
         )
     ),
-//    navigateBack: () -> Unit,
+    navigateBack: () -> Unit,
 ) {
     viewModel.resultState.collectAsState(initial = ResultState.Loading).value.let { resultState ->
         when (resultState) {
@@ -69,10 +69,8 @@ fun DetailScreen(
 @Composable
 fun DetailContent(
     fruits: FruitResponse,
-//    onBackClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-
     Column(
         modifier = modifier
     ) {
@@ -82,7 +80,6 @@ fun DetailContent(
                 .weight(1f)
         ) {
             Box {
-//                ICoilImage
                 Image(
                     painter = rememberImagePainter(fruits.imageUrl),
                     contentDescription = null,
@@ -97,7 +94,7 @@ fun DetailContent(
                     contentDescription = stringResource(R.string.back),
                     modifier = modifier
                         .padding(16.dp)
-//                        .clickable { onBackClick() }
+                    // .clickable { onBackClick() }
                 )
             }
             Row(
@@ -108,39 +105,41 @@ fun DetailContent(
                         .padding(16.dp)
                         .weight(2f)
                 ) {
-                    Text(
-                        text = fruits.category,
-                        textAlign = TextAlign.Center,
-                        style = MaterialTheme.typography.titleLarge.copy(
-                            fontWeight = FontWeight.ExtraBold,
-                            fontSize = 30.sp
-                        ),
-                    )
+                    fruits.category?.let {
+                        Text(
+                            text = it,
+                            textAlign = TextAlign.Center,
+                            style = MaterialTheme.typography.titleLarge.copy(
+                                fontWeight = FontWeight.ExtraBold,
+                                fontSize = 30.sp
+                            ),
+                        )
+                    }
 
                     Spacer(modifier = modifier.height(16.dp))
 
-                    Text(
-                        text = fruits.notes,
-                        style = MaterialTheme.typography.bodyMedium.copy(
-                            fontSize = 14.sp
-                        ),
-                        textAlign = TextAlign.Justify,
-                    )
+                    fruits.notes?.let {
+                        Text(
+                            text = it,
+                            style = MaterialTheme.typography.bodyMedium.copy(
+                                fontSize = 14.sp
+                            ),
+                            textAlign = TextAlign.Justify,
+                        )
+                    }
                 }
                 Column(
                     modifier = modifier.padding(16.dp),
                     horizontalAlignment = Alignment.End
                 ) {
-                    Text(
-                        text = stringResource(R.string.ripeness, fruits.ripeness),
-                        style = MaterialTheme.typography.titleLarge.copy(
-                            fontWeight = FontWeight.ExtraBold
-                        ),
-                    )
-//                    Text(
-//                        text = date,
-//                        style = MaterialTheme.typography.bodySmall,
-//                    )
+                    fruits.ripeness?.let {
+                        Text(
+                            text = stringResource(R.string.ripeness, it),
+                            style = MaterialTheme.typography.titleLarge.copy(
+                                fontWeight = FontWeight.ExtraBold
+                            ),
+                        )
+                    }
                 }
             }
         }

@@ -1,14 +1,13 @@
-package com.ardine.fruturity.ui.screen.myStuff.bookmark
+package com.ardine.fruturity.ui.screen.bookmark
 
-import android.util.Log
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.ardine.fruturity.data.database.Repository
+import com.ardine.fruturity.data.repositories.Repository
 import com.ardine.fruturity.data.ResultState
 import com.ardine.fruturity.data.response.FruitResponse
-import com.ardine.fruturity.ui.screen.myStuff.SearchState
+import com.ardine.fruturity.ui.screen.SearchState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -21,12 +20,11 @@ class BookmarkViewModel(private val repository: Repository) : ViewModel() {
     private val _searchState = mutableStateOf(SearchState())
     val searchState: State<SearchState> = _searchState
 
-    fun getAllFruits() {
+    fun getAllBookmarkFruits() {
         viewModelScope.launch {
             try {
-                val response = repository.getAllFruits()
+                val response = repository.getBookmarkFruits()
                 _resultState.value = ResultState.Success(response)
-                Log.d("HISTORYYY", "YESSSSSSSSSSSS")
             } catch (e: Exception) {
                 _resultState.value = ResultState.Error(e.message.toString())
             }

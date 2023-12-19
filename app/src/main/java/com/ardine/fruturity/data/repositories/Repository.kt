@@ -1,14 +1,13 @@
-package com.ardine.fruturity.data.database
+package com.ardine.fruturity.data.repositories
 
 import com.ardine.fruturity.data.api.ApiService
-import com.ardine.fruturity.data.response.FruitHistory
 import com.ardine.fruturity.data.response.FruitResponse
 
 class Repository private constructor(
     private val apiService: ApiService,
 ){
-    private  val fruits = mutableListOf<FruitResponse>()
-    private  val dummy = mutableListOf<FruitHistory>()
+    private  val historyFruits = mutableListOf<FruitResponse>()
+    private  val bookmarkFruits = mutableListOf<FruitResponse>()
 
 //    init{
 //        if (fruits.isEmpty()){
@@ -22,13 +21,23 @@ class Repository private constructor(
 //        return flowOf(dummy)
 //    }
 
+    suspend fun getBookmarkFruits(): List<FruitResponse> {
+        try {
+            val response = apiService.getBookmarkedFruits()
+            bookmarkFruits.addAll(response)
+            return response
+        } catch (e: Exception){
+            e.printStackTrace()
+            throw e
+        }
+    }
+
     suspend fun getAllFruits(): List<FruitResponse> {
         try {
             val response = apiService.getFruits()
-            fruits.addAll(response)
+            historyFruits.addAll(response)
             return response
         } catch (e: Exception) {
-            // Handle the exception (e.g., logging, error reporting)
             e.printStackTrace()
             throw e
         }
@@ -50,17 +59,17 @@ class Repository private constructor(
 //        }
 //    }
 
-    suspend fun getAllMarkedFruits(): List<FruitResponse> {
-        try {
-            val response = apiService.getFruits()
-            fruits.addAll(response)
-            return response
-        } catch (e: Exception) {
-            // Handle the exception (e.g., logging, error reporting)
-            e.printStackTrace()
-            throw e
-        }
-    }
+//    suspend fun getAllMarkedFruits(): List<FruitResponse> {
+//        try {
+//            val response = apiService.getFruits()
+//            fruits.addAll(response)
+//            return response
+//        } catch (e: Exception) {
+//            // Handle the exception (e.g., logging, error reporting)
+//            e.printStackTrace()
+//            throw e
+//        }
+//    }
 
 //    fun updateBookmarkStatus(fruitId: Long) {
 //        val index = fruits.indexOfFirst { it.fruits.id == fruitId }

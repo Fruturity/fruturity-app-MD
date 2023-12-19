@@ -1,5 +1,6 @@
-package com.ardine.fruturity.ui.screen.myStuff.bookmark
+package com.ardine.fruturity.ui.screen.bookmark
 
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -30,28 +31,26 @@ fun BookmarkScreen(
     viewModel: BookmarkViewModel = viewModel(
         factory = ViewModelFactory(Injection.provideRepository())
     ),
+    navigateToDetail: (String) -> Unit,
 ) {
     val searchState by viewModel.searchState
     viewModel.resultState.collectAsState(initial = ResultState.Loading).value.let { resultState ->
         when (resultState) {
             is ResultState.Loading -> {
-                viewModel.getAllFruits()
+                viewModel.getAllBookmarkFruits()
             }
             is ResultState.Success -> {
                 BookmarkContent(
                     fruits = resultState.data,
                     query = searchState.query,
-//                    onQueryChange = viewModel::onQueryChange,
-//                    updateBookmarkStatus = {
-//                       viewModel.updateFruitMark(it)
-//                    },
+                    navigateToDetail = navigateToDetail,
                     modifier = modifier,
                 )
+                Log.d("KAsdj", "${resultState.data}")
             }
             is ResultState.Error -> {
                 Toast.makeText(LocalContext.current, R.string.empty_msg, Toast.LENGTH_SHORT).show()
             }
-
         }
     }
 }
@@ -59,25 +58,11 @@ fun BookmarkScreen(
 @Composable
 fun BookmarkContent(
     fruits: List<FruitResponse>,
-    query :String,
-//    onQueryChange: (String) -> Unit,
-//    updateBookmarkStatus :(id: Long) -> Unit,
+    query: String,
+    navigateToDetail: (String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column {
-//        Box(
-//            modifier = modifier
-//                .padding(horizontal = 8.dp)
-//        ) {
-//            SearchBar(
-//                query = query,
-//                onQueryChange = onQueryChange,
-//                modifier = Modifier
-//                    .padding(vertical = 8.dp)
-//                    .fillMaxWidth()
-//                    .clip(RoundedCornerShape(8.dp))
-//            )
-//        }
         if (fruits.isEmpty()) {
             Text(
                 modifier = modifier.padding(8.dp),
@@ -90,16 +75,21 @@ fun BookmarkContent(
                 verticalArrangement = Arrangement.spacedBy(16.dp),
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
-                items(fruits) { items ->
-                    MyItems(
-                        fruitsId = items.id ,
-                        ripeness = items.ripeness,
-                        imageUrl = items.imageUrl,
-                        category = items.category,
-                        date = items.date,
-//                        bookmarkStatus = items.fruits.isBookmark,
-//                        updateBookmarkStatus = updateBookmarkStatus,
-                    )
+                items(fruits) { item ->
+                    if (item != null) {
+                        MyItems(
+                            fruitsId = item.id,
+                            ripeness = item.ripeness,
+                            imageUrl = item.imageUrl,
+                            category = item.category,
+                            date = item.date,
+                            onItemClick = {
+                                navigateToDetail(item.id)
+                            }
+                        )
+                    } else {
+                        Text("Error: Null item found")
+                    }
                 }
             }
         }

@@ -21,7 +21,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.rememberImagePainter
 import coil.transform.CircleCropTransformation
-import com.ardine.fruturity.data.response.Date
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -30,8 +29,8 @@ fun MyItems(
     ripeness: String,
     imageUrl: String,
     category: String,
-    date: Date,
-//    onItemClick: () -> Unit,
+    date: String,
+    onItemClick: (String) -> Unit,
 //    bookmarkStatus: Boolean,
 //    updateBookmarkStatus: (id :Long) -> Unit,
     modifier: Modifier = Modifier
@@ -43,7 +42,7 @@ fun MyItems(
         ),
         modifier = modifier
             .padding(4.dp),
-//        onClick = onItemClick,
+        onClick = { onItemClick(fruitsId) }
     ) {
         Row(
             modifier = Modifier

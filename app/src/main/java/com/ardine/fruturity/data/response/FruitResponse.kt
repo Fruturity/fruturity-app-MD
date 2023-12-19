@@ -7,7 +7,7 @@ import com.google.gson.annotations.SerializedName
 data class FruitResponse(
 
 	@field:SerializedName("date")
-	val date: Date,
+	val date: String,
 
 	@field:SerializedName("image")
 	val image: String,
@@ -29,13 +29,4 @@ data class FruitResponse(
 
 	@field:SerializedName("notes")
 	val notes: String
-)
-
-data class Date(
-
-	@field:SerializedName("_nanoseconds")
-	val nanoseconds: Int,
-
-	@field:SerializedName("_seconds")
-	val seconds: Int
 )

@@ -1,4 +1,4 @@
-package com.ardine.fruturity.ui.screen.myStuff.history
+package com.ardine.fruturity.ui.screen.history
 
 import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
@@ -25,11 +25,11 @@ import com.ardine.fruturity.ui.components.MyItems
 
 @Composable
 fun HistoryScreen(
-    modifier : Modifier = Modifier,
+    modifier: Modifier = Modifier,
     viewModel: HistoryViewModel = viewModel(
         factory = ViewModelFactory(Injection.provideRepository())
     ),
-    navigateToDetail: (String) -> Unit,
+    navigateToDetail: (fruitId: String) -> Unit,
 ){
     val searchState by viewModel.searchState
 
@@ -98,9 +98,9 @@ fun HistoryContent (
                             imageUrl = items.imageUrl,
                             category = items.category,
                             date = items.date,
-//                            onItemClick = {
-////                                navigateToDetail(items.id)
-////                            },
+                            onItemClick = {
+                                navigateToDetail(items.id)
+                            },
 //                            bookmarkStatus = items.fruits.isBookmark,
 //                            updateBookmarkStatus = updateBookmarkStatus,
                         )
