@@ -34,6 +34,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CameraAlt
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Photo
+import androidx.compose.material.icons.filled.Stream
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.ButtonDefaults
@@ -58,9 +59,11 @@ import androidx.core.content.FileProvider
 import coil.compose.AsyncImage
 import coil.compose.rememberAsyncImagePainter
 import coil.compose.rememberImagePainter
+import com.ardine.fruturity.MainActivity
 import com.ardine.fruturity.R
 import com.ardine.fruturity.ui.components.ButtonCamera
 import com.ardine.fruturity.ui.components.ButtonDetection
+import com.ardine.fruturity.ui.screen.result.ResultActivity
 import com.ardine.fruturity.ui.theme.FruturityTheme
 import java.io.File
 import java.text.SimpleDateFormat
@@ -179,6 +182,13 @@ fun ImageCapture(
 //                    onClickButtonCamera = {},
 //                )
 
+            Row (
+                modifier = modifier ,
+                horizontalArrangement = Arrangement.spacedBy(5.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+
+
                 ButtonCamera(
                     icon = Icons.Default.CameraAlt,
                     tintColor = Color.White,
@@ -186,20 +196,29 @@ fun ImageCapture(
                         val permissionCheckResult =
                             ContextCompat.checkSelfPermission(context, Manifest.permission.CAMERA)
 
-                        if (permissionCheckResult == PackageManager.PERMISSION_GRANTED)
-                        {
+                        if (permissionCheckResult == PackageManager.PERMISSION_GRANTED) {
                             cameraLauncher.launch(uri)
-                        }
-                        else
-                        {
+                        } else {
                             permissionLauncher.launch(Manifest.permission.CAMERA)
                         }
                     },
                 )
 
+                val mCOntext = LocalContext.current
+
+                ButtonCamera(
+                    icon = Icons.Default.Stream,
+                    tintColor = Color.White,
+                    onClickButtonCamera = {
+                        mCOntext.startActivity(Intent(mCOntext, CameraRealTimeActivity::class.java))
+                    },
+                )
+            }
+
+            val context = LocalContext.current
             ButtonDetection(
                 onClick = {
-
+                    context.startActivity(Intent(context, ResultActivity::class.java))
                 },
                 text = "Start Detection!!"
             )

@@ -3,7 +3,6 @@ package com.ardine.fruturity
 import android.content.Intent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -51,7 +50,6 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -64,6 +62,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.ardine.fruturity.data.MenuItem
 import com.ardine.fruturity.ui.screen.camera.CameraxActivity
+import com.ardine.fruturity.ui.screen.camera.ImageClasificationActivity
 
 import com.ardine.fruturity.ui.screen.myStuff.MyStuffScreen
 
@@ -280,7 +279,7 @@ fun HomeContent(
             val mCOntext = LocalContext.current
             Button(
                 onClick = {
-                    mCOntext.startActivity(Intent(mCOntext, CameraxActivity::class.java))
+                    mCOntext.startActivity(Intent(mCOntext, ImageClasificationActivity::class.java))
                 },
                 shape = CircleShape
             ) {

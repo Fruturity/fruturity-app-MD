@@ -17,6 +17,8 @@
 
     <string name="history">History</string>
     <string name="mystuff">My Stuff</string>
+    <string name="title_activity_image_clasification">ImageClasificationActivity</string>
+    <string name="title_activity_result">ResultActivity</string>
 
 
     <!-- Detail -->
