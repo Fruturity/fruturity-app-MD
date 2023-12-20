@@ -20,6 +20,12 @@
 
     <string name="title_activity_image_clasification">ImageClasificationActivity</string>
     <string name="title_activity_result">ResultActivity</string>
+    <string name="result">Result</string>
+    <string name="category">Category: </string>
+    <string name="Ripenes">"Ripeness: "</string>
+    <string name="detected_on">"Detected On: "</string>
+    <string name="edit">Edit</string>
+    <string name="save">Save</string>
 
     <!-- Detail -->
 

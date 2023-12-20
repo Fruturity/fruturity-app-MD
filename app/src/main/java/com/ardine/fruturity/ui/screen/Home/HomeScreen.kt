@@ -1,4 +1,4 @@
-package com.ardine.fruturity.ui.screen.home
+package com.ardine.fruturity.ui.screen.Home
 
 import android.content.Intent
 import androidx.compose.foundation.Image

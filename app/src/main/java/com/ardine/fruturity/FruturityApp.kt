@@ -23,10 +23,10 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.ardine.fruturity.ui.navigation.NavigationItem
-import com.ardine.fruturity.ui.screen.home.HomeScreen
 import com.ardine.fruturity.ui.screen.bookmark.BookmarkScreen
 import com.ardine.fruturity.ui.screen.detail.DetailScreen
 import com.ardine.fruturity.ui.screen.history.HistoryScreen
+import com.ardine.fruturity.ui.screen.Home.HomeScreen
 import com.ardine.fruturity.ui.theme.FruturityTheme
 
 @Composable
@@ -40,9 +40,6 @@ fun FruturityApp(
             currentRoute?.startsWith(Screen.ItemType.BOOKMARK.route) == true
 
     Scaffold(
-        topBar = {
-
-        },
         bottomBar = {
 //            if (!isDetailScreen) {
                 BottomBar(navController)
