@@ -13,13 +13,19 @@
     <string name="back">Back</string>
     <string name="ripeness">Very Ripe</string>
 
-    <string name="title_activity_camerax">CameraxActivity</string>
-
     <string name="history">History</string>
     <string name="mystuff">My Stuff</string>
+
+    <string name="title_activity_camerax">CameraxActivity</string>
     <string name="title_activity_image_clasification">ImageClasificationActivity</string>
     <string name="title_activity_result">ResultActivity</string>
 
+    <string name="result">Result</string>
+    <string name="category">Category: </string>
+    <string name="Ripenes">"Ripeness: "</string>
+    <string name="detected_on">"Detected On: "</string>
+    <string name="edit">Edit</string>
+    <string name="save">Save</string>
 
     <!-- Detail -->
 

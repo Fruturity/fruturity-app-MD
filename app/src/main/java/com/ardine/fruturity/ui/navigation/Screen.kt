@@ -3,12 +3,11 @@ sealed class Screen(val route: String) {
     object Camera : Screen("camera")
     object History : Screen("history")
     object Bookmark : Screen("bookmark")
+    object Detail : Screen("detail")
 
-    data class Detail(val type: ItemType, val fruitId: String) : Screen("${type.route}/${fruitId}") {
-        companion object {
-            fun createRoute(type: ItemType, fruitId: String): String {
-                return "${type.route}/$fruitId"
-            }
+    companion object {
+        fun createRoute(type: ItemType, fruitId: String): String {
+            return "${type.route}/detail/$fruitId"
         }
     }
 

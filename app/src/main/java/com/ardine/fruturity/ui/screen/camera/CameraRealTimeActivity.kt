@@ -1,5 +1,8 @@
 package com.ardine.fruturity.ui.screen.camera
 
+import androidx.appcompat.app.AppCompatActivity
+import android.os.Bundle
+import com.ardine.fruturity.R
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.pm.PackageManager
@@ -7,20 +10,18 @@ import android.graphics.*
 import android.hardware.camera2.CameraCaptureSession
 import android.hardware.camera2.CameraDevice
 import android.hardware.camera2.CameraManager
-import android.os.Bundle
 import android.os.Handler
 import android.os.HandlerThread
 import android.view.Surface
 import android.view.TextureView
 import android.widget.ImageView
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import com.ardine.fruturity.R
 import com.ardine.fruturity.ml.ModelFruturity
 import org.tensorflow.lite.support.common.FileUtil
 import org.tensorflow.lite.support.image.ImageProcessor
 import org.tensorflow.lite.support.image.TensorImage
 import org.tensorflow.lite.support.image.ops.ResizeOp
+
 
 
 class CameraRealTimeActivity : AppCompatActivity() {

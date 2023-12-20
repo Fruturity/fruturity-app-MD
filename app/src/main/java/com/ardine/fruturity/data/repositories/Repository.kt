@@ -1,6 +1,8 @@
 package com.ardine.fruturity.data.repositories
 
+import com.ardine.fruturity.data.ResultState
 import com.ardine.fruturity.data.api.ApiService
+import com.ardine.fruturity.data.request.AddNoteRequest
 import com.ardine.fruturity.data.response.FruitResponse
 
 class Repository private constructor(
@@ -8,18 +10,6 @@ class Repository private constructor(
 ){
     private  val historyFruits = mutableListOf<FruitResponse>()
     private  val bookmarkFruits = mutableListOf<FruitResponse>()
-
-//    init{
-//        if (fruits.isEmpty()){
-//            FruitsDataSource.dummyFruits.forEach{
-//                fruits.add(FruitResponse(dummyFruits)
-//            }
-//        }
-//    }
-
-//    fun getAllFruits(): Flow<List<FruitHistory>> {
-//        return flowOf(dummy)
-//    }
 
     suspend fun getBookmarkFruits(): List<FruitResponse> {
         try {
@@ -47,17 +37,25 @@ class Repository private constructor(
         return apiService.getFruitById(id)
     }
 
-//    suspend fun getFruitById(fruitId: String): FruitResponse {
-//        try {
-//            val response = apiService.getFruitById(fruitId)
-//            fruits.addAll(response)
-//            return response
+    suspend fun addNoteToFruit(id: String, note: String): ResultState<String> {
+        return try {
+            val request = AddNoteRequest(note)
+            val response = apiService.addNoteToFruit(id, request)
+            ResultState.Success(response.message)
+        } catch (e: Exception) {
+            ResultState.Error(e)
+        }
+    }
+
+//    suspend fun deleteFruitById(id: String): Result<String> {
+//        return try {
+//            val response = apiService.deleteFruitById(id)
+//            Result.Success(response.message)
 //        } catch (e: Exception) {
-//            // Handle the exception (e.g., logging, error reporting)
-//            e.printStackTrace()
-//            throw e
+//            Result.Error(e)
 //        }
 //    }
+
 
 //    suspend fun getAllMarkedFruits(): List<FruitResponse> {
 //        try {

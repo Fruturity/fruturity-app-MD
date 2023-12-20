@@ -40,8 +40,7 @@ fun MyItems(
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.primary
         ),
-        modifier = modifier
-            .padding(4.dp),
+        modifier = modifier.padding(4.dp),
         onClick = { onItemClick(fruitsId) }
     ) {
         Row(
