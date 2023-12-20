@@ -2,10 +2,15 @@ package com.ardine.fruturity.ui.screen.history
 
 import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -37,6 +42,16 @@ fun HistoryScreen(
         when(resultState){
             is ResultState.Loading -> {
                 viewModel.getAllFruits()
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(16.dp),
+                    contentAlignment = Alignment.Center
+                ) {
+                    CircularProgressIndicator(
+                        modifier = Modifier.size(40.dp)
+                    )
+                }
             }
             is ResultState.Success -> {
                 HistoryContent(
@@ -66,47 +81,34 @@ fun HistoryContent (
 //    onQueryChange: (String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-
     Column {
-//        Box(
-//            modifier = modifier
-//                .padding(horizontal = 8.dp)
-//        ) {
-//            SearchBar(
-//                query = query,
-//                onQueryChange = onQueryChange,
-//                modifier = modifier
-//                    .clip(RoundedCornerShape(8.dp))
-//            )
-//        }
-            if (fruits.isEmpty()) {
-                Text(
-                    modifier = modifier,
-                    text = stringResource(R.string.empty_msg)
-                )
-            } else {
-                LazyColumn(
-                    modifier = modifier,
-                    contentPadding = PaddingValues(16.dp),
-                    verticalArrangement = Arrangement.spacedBy(16.dp),
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                ) {
-                    items(fruits) { items ->
-                        MyItems(
-                            fruitsId = items.id ,
-                            ripeness = items.ripeness,
-                            imageUrl = items.imageUrl,
-                            category = items.category,
-                            date = items.date,
-                            onItemClick = {
-                                navigateToDetail(items.id)
-                            },
+        if (fruits.isEmpty()) {
+            Text(
+                modifier = modifier,
+                text = stringResource(R.string.empty_msg)
+            )
+        } else {
+            LazyColumn(
+                modifier = modifier,
+                contentPadding = PaddingValues(16.dp),
+                verticalArrangement = Arrangement.spacedBy(16.dp),
+                horizontalAlignment = Alignment.CenterHorizontally,
+            ) {
+                items(fruits) { items ->
+                    MyItems(
+                        fruitsId = items.id ,
+                        ripeness = items.ripeness,
+                        imageUrl = items.imageUrl,
+                        category = items.category,
+                        date = items.date,
+                        onItemClick = {
+                            navigateToDetail(items.id)
+                        },
 //                            bookmarkStatus = items.fruits.isBookmark,
 //                            updateBookmarkStatus = updateBookmarkStatus,
-                        )
-                    }
+                    )
                 }
             }
-
+        }
     }
 }

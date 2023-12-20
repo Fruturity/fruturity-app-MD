@@ -2,9 +2,9 @@ package com.ardine.fruturity
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AccountCircle
+import androidx.compose.material.icons.filled.Bookmark
 import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.ShoppingCart
+import androidx.compose.material.icons.filled.Inventory
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
@@ -23,7 +23,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.ardine.fruturity.ui.navigation.NavigationItem
-import com.ardine.fruturity.ui.screen.Home.HomeScreen
+import com.ardine.fruturity.ui.screen.home.HomeScreen
 import com.ardine.fruturity.ui.screen.bookmark.BookmarkScreen
 import com.ardine.fruturity.ui.screen.detail.DetailScreen
 import com.ardine.fruturity.ui.screen.history.HistoryScreen
@@ -119,12 +119,12 @@ private fun BottomBar(
             ),
             NavigationItem(
                 title = "History",
-                icon = Icons.Default.ShoppingCart,
+                icon = Icons.Default.Inventory,
                 screen = Screen.History
             ),
             NavigationItem(
                 title = "Bookmark",
-                icon = Icons.Default.AccountCircle,
+                icon = Icons.Default.Bookmark,
                 screen = Screen.Bookmark
             )
         )

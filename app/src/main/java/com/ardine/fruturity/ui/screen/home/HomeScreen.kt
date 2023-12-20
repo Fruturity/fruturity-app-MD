@@ -1,4 +1,4 @@
-package com.ardine.fruturity.ui.screen.Home
+package com.ardine.fruturity.ui.screen.home
 
 import android.content.Intent
 import androidx.compose.foundation.Image
@@ -87,22 +87,13 @@ fun HomeScreen (
                 .clip(CircleShape)
                 .background(MaterialTheme.colorScheme.primary)
         ) {
-//            Image(
-//                painter = painterResource(id = R.drawable.ic_scan),
-//                contentDescription = "Icon Scanner",
-//                contentScale = ContentScale.Crop,
-//                modifier = modifier
-//                    .fillMaxSize()
-//                    .clip(CircleShape)
-//            )
             val mCOntext = LocalContext.current
             Button(
                 onClick = {
-                   mCOntext.startActivity(Intent(mCOntext, CameraxActivity::class.java))
+                    mCOntext.startActivity(Intent(mCOntext, CameraxActivity::class.java))
                 },
                 shape = CircleShape
             ) {
-                Text(text = "start detection")
                 Image(
                     painter = painterResource(id = R.drawable.ic_scan),
                     contentDescription = null ,

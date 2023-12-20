@@ -6,14 +6,17 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -51,6 +54,16 @@ fun DetailScreen(
         when (resultState) {
             is ResultState.Loading -> {
                 viewModel.getFruitById(fruitId)
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(16.dp),
+                    contentAlignment = Alignment.Center
+                ) {
+                    CircularProgressIndicator(
+                        modifier = Modifier.size(40.dp)
+                    )
+                }
             }
             is ResultState.Success -> {
                 DetailContent(
@@ -145,20 +158,3 @@ fun DetailContent(
         }
     }
 }
-
-
-//@Preview(showBackground = true, device = Devices.PIXEL_4)
-//@Composable
-//fun DetailContentPreview() {
-//    FruturityTheme {
-//        DetailContent(
-//            R.drawable.apple,
-//            "Apple",
-//            "An apple keeps the doctor away",
-//            12000,
-//            1,
-//            onBackClick = {},
-//            onAddToCart = {},
-//        )
-//    }
-//}
