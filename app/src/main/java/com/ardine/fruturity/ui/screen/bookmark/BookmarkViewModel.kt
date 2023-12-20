@@ -4,8 +4,8 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.ardine.fruturity.data.ResultState
 import com.ardine.fruturity.data.repositories.Repository
+import com.ardine.fruturity.data.ResultState
 import com.ardine.fruturity.data.response.FruitResponse
 import com.ardine.fruturity.ui.screen.SearchState
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -26,7 +26,7 @@ class BookmarkViewModel(private val repository: Repository) : ViewModel() {
                 val response = repository.getBookmarkFruits()
                 _resultState.value = ResultState.Success(response)
             } catch (e: Exception) {
-                _resultState.value = ResultState.Error(e.message.toString())
+                _resultState.value = ResultState.Error(e)
             }
         }
     }

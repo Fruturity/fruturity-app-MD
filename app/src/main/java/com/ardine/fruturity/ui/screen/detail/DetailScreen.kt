@@ -1,28 +1,43 @@
 package com.ardine.fruturity.ui.screen.detail
 
 import android.widget.Toast
-import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -30,12 +45,12 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import coil.compose.rememberImagePainter
 import com.ardine.fruturity.R
 import com.ardine.fruturity.data.ResultState
 import com.ardine.fruturity.data.response.FruitResponse
 import com.ardine.fruturity.di.Injection
 import com.ardine.fruturity.ui.ViewModelFactory
+
 
 @Composable
 fun DetailScreen(
@@ -51,11 +66,21 @@ fun DetailScreen(
         when (resultState) {
             is ResultState.Loading -> {
                 viewModel.getFruitById(fruitId)
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(16.dp),
+                    contentAlignment = Alignment.Center
+                ) {
+                    CircularProgressIndicator(
+                        modifier = Modifier.size(40.dp)
+                    )
+                }
             }
             is ResultState.Success -> {
                 DetailContent(
                     fruits = resultState.data,
-//                    onBackClick = navigateBack,
+                    onBackClick = navigateBack,
                 )
             }
             is ResultState.Error -> {
@@ -66,99 +91,201 @@ fun DetailScreen(
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DetailContent(
     fruits: FruitResponse,
+    onBackClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    Column(
-        modifier = modifier
-    ) {
+    val colorTheme = MaterialTheme.colorScheme.primary
+    var isEditMode by remember { mutableStateOf(false) }
+    var editedText by remember { mutableStateOf(fruits.notes ?: "") }
+
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = {
+                    Text(
+                        text = stringResource(R.string.result),
+                        style = MaterialTheme.typography.titleLarge.copy(
+                            fontWeight = FontWeight.ExtraBold,
+                            fontSize = 20.sp
+                        ),
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier.fillMaxWidth(),
+                        color = colorTheme
+                    )
+                },
+                navigationIcon = {
+                    Icon(
+                        imageVector = Icons.Default.ArrowBack,
+                        contentDescription = stringResource(R.string.back),
+                        modifier = Modifier
+                            .padding(16.dp)
+                            .clickable { onBackClick() },
+                        tint = colorTheme
+                    )
+                },
+                actions = {
+                    if (isEditMode == false){
+                        Icon(
+                            imageVector = Icons.Default.Edit,
+                            contentDescription = stringResource(R.string.edit),
+                            modifier = Modifier
+                                .padding(16.dp)
+                                .clickable { isEditMode = !isEditMode },
+                            tint = colorTheme,
+                        )
+                    } else {
+                        Icon(
+                            imageVector = Icons.Default.Check,
+                            contentDescription = stringResource(R.string.save),
+                            modifier = Modifier
+                                .padding(16.dp)
+                                .clickable {
+                                    isEditMode = !isEditMode
+                                },
+                            tint = colorTheme,
+                        )
+                    }
+
+                },
+                modifier = Modifier.fillMaxWidth(),
+            )
+        }
+    ) { paddingValues ->
         Column(
             modifier = modifier
-                .verticalScroll(rememberScrollState())
-                .weight(1f)
+                .padding(paddingValues)
         ) {
-            Box {
-                Image(
-                    painter = rememberImagePainter(fruits.imageUrl),
-                    contentDescription = null,
-                    contentScale = ContentScale.Crop,
-                    modifier = modifier
-                        .height(400.dp)
-                        .fillMaxWidth()
-                        .clip(RoundedCornerShape(bottomStart = 20.dp, bottomEnd = 20.dp))
-                )
-                Icon(
-                    imageVector = Icons.Default.ArrowBack,
-                    contentDescription = stringResource(R.string.back),
-                    modifier = modifier
-                        .padding(16.dp)
-                    // .clickable { onBackClick() }
-                )
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp),
+                contentAlignment = Alignment.Center
+            ) {
+//                val painter = rememberImagePainter(data = fruits.imageUrl)
+//                Image(
+//                    painter = R.drawable.ic_scan,
+//                    contentDescription = null,
+//                    contentScale = ContentScale.Crop,
+//                    modifier = Modifier
+//                        .size(150.dp)
+//                        .clip(CircleShape)
+//                )
+
+                Spacer(modifier = Modifier.height(16.dp))
             }
-            Row(
+
+            Card(
+                shape = MaterialTheme.shapes.large,
+                colors = CardDefaults.cardColors(
+                    containerColor = MaterialTheme.colorScheme.primary
+                ),
                 modifier = modifier
+                    .width(500.dp)
+                    .padding(16.dp),
             ) {
                 Column(
-                    modifier = modifier
-                        .padding(16.dp)
-                        .weight(2f)
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(16.dp),
                 ) {
-                    fruits.category?.let {
-                        Text(
-                            text = it,
-                            textAlign = TextAlign.Center,
-                            style = MaterialTheme.typography.titleLarge.copy(
-                                fontWeight = FontWeight.ExtraBold,
-                                fontSize = 30.sp
-                            ),
-                        )
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.Center,
+                    ) {
+                        Column (
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                        ){
+                            Text(
+                                text = stringResource(R.string.category),
+                                textAlign = TextAlign.Center,
+                            )
+                            Text(
+                                text = fruits.category,
+                                textAlign = TextAlign.Center,
+                                style = MaterialTheme.typography.titleLarge.copy(
+                                    fontWeight = FontWeight.Bold,
+                                    fontSize = 24.sp
+                                ),
+                            )
+                        }
                     }
 
-                    Spacer(modifier = modifier.height(16.dp))
+                    Spacer(modifier = Modifier.height(16.dp))
 
-                    fruits.notes?.let {
-                        Text(
-                            text = it,
-                            style = MaterialTheme.typography.bodyMedium.copy(
-                                fontSize = 14.sp
-                            ),
-                            textAlign = TextAlign.Justify,
-                        )
+                    Row(
+                        modifier = modifier
+                            .padding(8.dp)
+                            .fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                    ) {
+                        Column (
+                            modifier = modifier,
+                            horizontalAlignment = Alignment.Start,
+                        ){
+                            Text(text = stringResource(R.string.Ripenes))
+                            Text(
+                                text = fruits.ripeness,
+                                style = MaterialTheme.typography.titleLarge.copy(
+                                    fontWeight = FontWeight.Bold,
+                                    fontSize = 18.sp
+                                ),
+                            )
+                        }
+                        Column (
+                            modifier = modifier,
+                            horizontalAlignment = Alignment.End,
+                        ) {
+                            Text(text = stringResource(R.string.detected_on))
+                            Text(
+                                text = fruits.date,
+                                style = MaterialTheme.typography.titleLarge.copy(
+                                    fontWeight = FontWeight.Bold,
+                                    fontSize = 18.sp
+                                ),
+                            )
+                        }
                     }
-                }
-                Column(
-                    modifier = modifier.padding(16.dp),
-                    horizontalAlignment = Alignment.End
-                ) {
-                    fruits.ripeness?.let {
-                        Text(
-                            text = stringResource(R.string.ripeness, it),
-                            style = MaterialTheme.typography.titleLarge.copy(
-                                fontWeight = FontWeight.ExtraBold
-                            ),
-                        )
+
+                    Spacer(modifier = Modifier.height(16.dp))
+
+                    Card(
+                        modifier = modifier
+                            .fillMaxWidth()
+                            .height(200.dp)
+                            .padding(16.dp)
+                    ) {
+                        if (isEditMode) {
+                            val focusRequester = remember { FocusRequester() }
+                            BasicTextField(
+                                value = editedText,
+                                onValueChange = { newValue ->
+                                    editedText = newValue
+                                },
+                                textStyle = MaterialTheme.typography.bodyMedium,
+                                modifier = Modifier
+                                    .padding(16.dp)
+                                    .fillMaxWidth()
+                                    .focusRequester(focusRequester)
+                            )
+
+                            LaunchedEffect(isEditMode) {
+                                if (isEditMode) {
+                                    focusRequester.requestFocus()
+                                }
+                            }
+                        } else {
+                            Text(
+                                text = fruits.notes ?: "",
+                                modifier = Modifier.padding(16.dp)
+                            )
+                        }
                     }
                 }
             }
         }
     }
 }
-
-
-//@Preview(showBackground = true, device = Devices.PIXEL_4)
-//@Composable
-//fun DetailContentPreview() {
-//    FruturityTheme {
-//        DetailContent(
-//            R.drawable.apple,
-//            "Apple",
-//            "An apple keeps the doctor away",
-//            12000,
-//            1,
-//            onBackClick = {},
-//            onAddToCart = {},
-//        )
-//    }
-//}
