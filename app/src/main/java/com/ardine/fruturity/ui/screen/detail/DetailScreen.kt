@@ -217,32 +217,34 @@ fun DetailContent(
                     Spacer(modifier = Modifier.height(16.dp))
 
                     Row(
-                        modifier = Modifier
+                        modifier = modifier
                             .padding(8.dp)
                             .fillMaxWidth(),
                         horizontalArrangement = Arrangement.SpaceBetween,
                     ) {
                         Column (
-                            horizontalAlignment = Alignment.CenterHorizontally,
+                            modifier = modifier,
+                            horizontalAlignment = Alignment.Start,
                         ){
                             Text(text = stringResource(R.string.Ripenes))
                             Text(
                                 text = fruits.ripeness,
                                 style = MaterialTheme.typography.titleLarge.copy(
                                     fontWeight = FontWeight.Bold,
-                                    fontSize = 24.sp
+                                    fontSize = 18.sp
                                 ),
                             )
                         }
                         Column (
-                            horizontalAlignment = Alignment.CenterHorizontally,
+                            modifier = modifier,
+                            horizontalAlignment = Alignment.End,
                         ) {
                             Text(text = stringResource(R.string.detected_on))
                             Text(
                                 text = fruits.date,
                                 style = MaterialTheme.typography.titleLarge.copy(
                                     fontWeight = FontWeight.Bold,
-                                    fontSize = 24.sp
+                                    fontSize = 18.sp
                                 ),
                             )
                         }

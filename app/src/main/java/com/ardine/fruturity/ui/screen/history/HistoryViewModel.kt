@@ -50,7 +50,7 @@ class HistoryViewModel(private val repository: Repository) : ViewModel() {
                 val response = repository.getAllFruits()
                 _resultState.value = ResultState.Success(response)
             } catch (e: Exception) {
-                _resultState.value = ResultState.Error(e.message.toString())
+                _resultState.value = ResultState.Error(e)
             }
         }
     }

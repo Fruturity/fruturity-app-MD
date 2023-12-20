@@ -36,14 +36,14 @@ fun FruturityApp(
 ) {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
-    val isDetailScreen = currentRoute?.startsWith(Screen.ItemType.HISTORY.route) == true ||
-            currentRoute?.startsWith(Screen.ItemType.BOOKMARK.route) == true
+
+    val isDetailScreen = currentRoute?.startsWith("detail") == true
 
     Scaffold(
         bottomBar = {
-//            if (!isDetailScreen) {
+            if (!isDetailScreen) {
                 BottomBar(navController)
-//            }
+            }
         },
         modifier = modifier
     ) { innerPadding ->
@@ -56,22 +56,22 @@ fun FruturityApp(
             composable(Screen.Home.route){
                 HomeScreen()
             }
-            composable(Screen.History.route){
+            composable(Screen.History.route) {
                 HistoryScreen(
                     navigateToDetail = { fruitId ->
-                        navController.navigate(Screen.Detail.createRoute(Screen.ItemType.HISTORY, fruitId))
+                        navController.navigate(Screen.createRoute(Screen.ItemType.HISTORY, fruitId))
                     }
                 )
             }
-            composable(Screen.Bookmark.route){
+            composable(Screen.Bookmark.route) {
                 BookmarkScreen(
                     navigateToDetail = { fruitId ->
-                        navController.navigate(Screen.Detail.createRoute(Screen.ItemType.BOOKMARK, fruitId))
+                        navController.navigate(Screen.createRoute(Screen.ItemType.BOOKMARK, fruitId))
                     }
                 )
             }
             composable(
-                route = "${Screen.ItemType.HISTORY.route}/{fruitId}",
+                route = "${Screen.ItemType.HISTORY.route}/detail/{fruitId}",
                 arguments = listOf(navArgument("fruitId") { type = NavType.StringType }),
             ) {
                 val id = it.arguments?.getString("fruitId") ?: ""
@@ -83,7 +83,7 @@ fun FruturityApp(
                 )
             }
             composable(
-                route = "${Screen.ItemType.BOOKMARK.route}/{fruitId}",
+                route = "${Screen.ItemType.BOOKMARK.route}/detail/{fruitId}",
                 arguments = listOf(navArgument("fruitId") { type = NavType.StringType }),
             ) {
                 val id = it.arguments?.getString("fruitId") ?: ""

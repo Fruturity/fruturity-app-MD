@@ -22,11 +22,21 @@ class DetailViewModel(private val repository: Repository) : ViewModel() {
                 val response = repository.getFruitById(id)
                 _resultState.value = ResultState.Success(response)
             } catch (e: Exception) {
-                _resultState.value = ResultState.Error(e.message.toString())
+                _resultState.value = ResultState.Error(e)
             }
         }
     }
 
+//    fun addNoteToFruit(id: String, note:String){
+//        viewModelScope.launch {
+//            try {
+//                val response = repository.addNoteToFruit(id,note)
+//                _resultState.value = ResultState.Success(response)
+//            } catch (e: Exception) {
+//                _resultState.value = ResultState.Error(e)
+//            }
+//        }
+//    }
 //    fun addBookmark (fruit: FruitResponse, count: Int) {
 //        viewModelScope.launch {
 //            repository.updateFruit(fruit.id, count)
