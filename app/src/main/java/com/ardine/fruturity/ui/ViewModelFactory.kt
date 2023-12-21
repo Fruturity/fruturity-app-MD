@@ -6,6 +6,7 @@ import com.ardine.fruturity.data.repositories.Repository
 import com.ardine.fruturity.ui.screen.bookmark.BookmarkViewModel
 import com.ardine.fruturity.ui.screen.detail.DetailViewModel
 import com.ardine.fruturity.ui.screen.history.HistoryViewModel
+import com.ardine.fruturity.ui.screen.prediction.CameraViewModel
 
 class ViewModelFactory(private val repository: Repository) :
     ViewModelProvider.NewInstanceFactory() {
@@ -20,6 +21,9 @@ class ViewModelFactory(private val repository: Repository) :
         }
         else if (modelClass.isAssignableFrom(DetailViewModel::class.java)) {
             return DetailViewModel(repository) as T
+        }
+        else if (modelClass.isAssignableFrom(CameraViewModel::class.java)) {
+            return CameraViewModel(repository) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class: " + modelClass.name)
     }

@@ -32,7 +32,7 @@
             android:name=".ui.screen.camera.CameraRealTimeActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.screen.camera.CameraxActivity"
+            android:name=".ui.screen.prediction.CameraxActivity"
             android:exported="false"
             android:label="@string/title_activity_camerax"
             android:theme="@style/Theme.Fruturity" />
