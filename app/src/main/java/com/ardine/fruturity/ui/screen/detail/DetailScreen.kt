@@ -13,7 +13,10 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Check
@@ -36,8 +39,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -45,6 +50,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import coil.compose.AsyncImage
 import com.ardine.fruturity.R
 import com.ardine.fruturity.data.ResultState
 import com.ardine.fruturity.data.response.FruitResponse
@@ -158,6 +164,7 @@ fun DetailContent(
         Column(
             modifier = modifier
                 .padding(paddingValues)
+                .verticalScroll(rememberScrollState())
         ) {
             Box(
                 modifier = Modifier
@@ -165,6 +172,15 @@ fun DetailContent(
                     .padding(16.dp),
                 contentAlignment = Alignment.Center
             ) {
+                AsyncImage(
+                    model = fruits.imageUrl,
+                    contentDescription = null,
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier
+                        .padding(8.dp)
+                        .size(200.dp)
+                        .clip(CircleShape)
+                )
 //                val painter = rememberImagePainter(data = fruits.imageUrl)
 //                Image(
 //                    painter = R.drawable.ic_scan,
@@ -257,6 +273,7 @@ fun DetailContent(
                             .fillMaxWidth()
                             .height(200.dp)
                             .padding(16.dp)
+                            .verticalScroll(rememberScrollState())
                     ) {
                         if (isEditMode) {
                             val focusRequester = remember { FocusRequester() }

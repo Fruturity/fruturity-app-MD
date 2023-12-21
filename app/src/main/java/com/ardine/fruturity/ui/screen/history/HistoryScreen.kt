@@ -1,6 +1,6 @@
 package com.ardine.fruturity.ui.screen.history
 
-import android.widget.Toast
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -14,10 +14,9 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -34,39 +33,48 @@ fun HistoryScreen(
     viewModel: HistoryViewModel = viewModel(
         factory = ViewModelFactory(Injection.provideRepository())
     ),
-    navigateToDetail: (fruitId: String) -> Unit,
-){
-    val searchState by viewModel.searchState
+    navigateToDetail: (String) -> Unit,
+) {
+    val resultState = viewModel.resultState.collectAsState().value
 
-    viewModel.resultState.collectAsState(initial = ResultState.Loading).value.let { resultState ->
-        when(resultState){
-            is ResultState.Loading -> {
-                viewModel.getAllFruits()
-                Box(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(16.dp),
-                    contentAlignment = Alignment.Center
-                ) {
-                    CircularProgressIndicator(
-                        modifier = Modifier.size(40.dp)
-                    )
-                }
-            }
-            is ResultState.Success -> {
-                HistoryContent(
-                    fruits = resultState.data,
-                    navigateToDetail = navigateToDetail,
-                    query = searchState.query,
-//                    onQueryChange = viewModel::onQueryChange,
-//                    updateBookmarkStatus = {
-//                        viewModel.updateFruitMark(it)
-//                    },
-                    modifier = modifier,
+    when (resultState) {
+        is ResultState.Loading -> {
+            viewModel.getAllFruits()
+            Box(
+                modifier = modifier
+                    .fillMaxSize()
+                    .padding(16.dp),
+                contentAlignment = Alignment.Center
+            ) {
+                CircularProgressIndicator(
+                    modifier = Modifier.size(40.dp)
                 )
             }
-            is ResultState.Error -> {
-                Toast.makeText(LocalContext.current, R.string.empty_msg, Toast.LENGTH_SHORT).show()
+        }
+        is ResultState.Success -> {
+            val fruits = resultState.data
+            HistoryContent(
+                fruits = fruits,
+                navigateToDetail = navigateToDetail,
+                updateBookmarkStatus = { fruitId, newStatus ->
+                    viewModel.updateBookmarkStatus(fruitId, newStatus)
+                },
+                modifier = modifier,
+            )
+        }
+        is ResultState.Error -> {
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(16.dp),
+            contentAlignment = Alignment.Center
+            ) {
+                Image(
+                    painter = painterResource(id = R.drawable.empty_img),
+                    contentDescription = "empty msg")
+                Text(
+                    text = stringResource(R.string.empty_msg)
+                )
             }
         }
     }
@@ -75,10 +83,8 @@ fun HistoryScreen(
 @Composable
 fun HistoryContent (
     fruits: List<FruitResponse>,
-    query: String,
     navigateToDetail: (String) -> Unit,
-//    updateBookmarkStatus :(id: Long) -> Unit,
-//    onQueryChange: (String) -> Unit,
+    updateBookmarkStatus :(String,Boolean) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column {
@@ -104,8 +110,10 @@ fun HistoryContent (
                         onItemClick = {
                             navigateToDetail(items.id)
                         },
-//                            bookmarkStatus = items.fruits.isBookmark,
-//                            updateBookmarkStatus = updateBookmarkStatus,
+                        bookmarkStatus = items.isBookmark,
+                        updateBookmarkStatus = { id, newStatus ->
+                            updateBookmarkStatus(id, newStatus)
+                        },
                     )
                 }
             }

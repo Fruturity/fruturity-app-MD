@@ -1,7 +1,6 @@
 package com.ardine.fruturity.ui.screen.bookmark
 
-import android.util.Log
-import android.widget.Toast
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -15,10 +14,9 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -37,7 +35,6 @@ fun BookmarkScreen(
     ),
     navigateToDetail: (String) -> Unit,
 ) {
-    val searchState by viewModel.searchState
     viewModel.resultState.collectAsState(initial = ResultState.Loading).value.let { resultState ->
         when (resultState) {
             is ResultState.Loading -> {
@@ -56,14 +53,27 @@ fun BookmarkScreen(
             is ResultState.Success -> {
                 BookmarkContent(
                     fruits = resultState.data,
-                    query = searchState.query,
+                    updateBookmarkStatus = { fruitId, newStatus ->
+                        viewModel.updateBookmarkStatus(fruitId, newStatus)
+                    },
                     navigateToDetail = navigateToDetail,
                     modifier = modifier,
                 )
-                Log.d("KAsdj", "${resultState.data}")
             }
             is ResultState.Error -> {
-                Toast.makeText(LocalContext.current, R.string.empty_msg, Toast.LENGTH_SHORT).show()
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(16.dp),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Image(
+                        painter = painterResource(id = R.drawable.empty_img),
+                        contentDescription = "empty msg")
+                    Text(
+                        text = stringResource(R.string.empty_msg)
+                    )
+                }
             }
         }
     }
@@ -72,8 +82,8 @@ fun BookmarkScreen(
 @Composable
 fun BookmarkContent(
     fruits: List<FruitResponse>,
-    query: String,
     navigateToDetail: (String) -> Unit,
+    updateBookmarkStatus :(String,Boolean) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column {
@@ -90,20 +100,20 @@ fun BookmarkContent(
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
                 items(fruits) { item ->
-                    if (item != null) {
-                        MyItems(
-                            fruitsId = item.id,
-                            ripeness = item.ripeness,
-                            imageUrl = item.imageUrl,
-                            category = item.category,
-                            date = item.date,
-                            onItemClick = {
-                                navigateToDetail(item.id)
-                            }
-                        )
-                    } else {
-                        Text("Error: Null item found")
-                    }
+                    MyItems(
+                        fruitsId = item.id,
+                        ripeness = item.ripeness,
+                        imageUrl = item.imageUrl,
+                        category = item.category,
+                        date = item.date,
+                        onItemClick = {
+                            navigateToDetail(item.id)
+                        },
+                        bookmarkStatus = item.isBookmark,
+                        updateBookmarkStatus = { id, newStatus ->
+                            updateBookmarkStatus(id, newStatus)
+                        },
+                    )
                 }
             }
         }

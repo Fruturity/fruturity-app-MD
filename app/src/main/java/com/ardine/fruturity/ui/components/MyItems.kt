@@ -1,26 +1,31 @@
 package com.ardine.fruturity.ui.components
 
-import androidx.compose.foundation.Image
+import android.util.Log
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import coil.compose.rememberImagePainter
-import coil.transform.CircleCropTransformation
+import coil.compose.AsyncImage
+import com.ardine.fruturity.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -31,16 +36,20 @@ fun MyItems(
     category: String,
     date: String,
     onItemClick: (String) -> Unit,
-//    bookmarkStatus: Boolean,
-//    updateBookmarkStatus: (id :Long) -> Unit,
+    bookmarkStatus: Boolean,
+    updateBookmarkStatus: (String,Boolean) -> Unit,
     modifier: Modifier = Modifier
 ) {
+    var bookmarkChange : Boolean
+
     Card(
         shape = MaterialTheme.shapes.medium,
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.primary
         ),
-        modifier = modifier.padding(4.dp),
+        modifier = modifier
+            .padding(4.dp)
+            .height(100.dp),
         onClick = { onItemClick(fruitsId) }
     ) {
         Row(
@@ -49,15 +58,12 @@ fun MyItems(
                 .fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Image(
-                painter = rememberImagePainter(
-                    data = imageUrl,
-                    builder = {
-                        transformations(CircleCropTransformation())
-                    }
-                ),
+            AsyncImage(
+                model = imageUrl,
                 contentDescription = null,
+                contentScale = ContentScale.Crop,
                 modifier = Modifier
+                    .padding(8.dp)
                     .size(60.dp)
                     .clip(CircleShape)
             )
@@ -85,35 +91,24 @@ fun MyItems(
                     modifier = modifier.padding(vertical = 2.dp)
                 )
             }
+            Log.d("BOOOKMAR", "$bookmarkStatus")
 
-//            IconButton(
-////                onClick = { updateBookmarkStatus(fruitsId) }
-//            ) {
-//                Icon(
-//                    painter = if (bookmarkStatus) {
-//                        painterResource(R.drawable.ic_bookmarked_white)
-//                    } else {
-//                        painterResource(R.drawable.ic_bookmark_white)
-//                    },
-//                    contentDescription = "Bookmark Icon",
-//                )
+            IconButton(
+                onClick = {
+                    updateBookmarkStatus(fruitsId, !bookmarkStatus)
+                    bookmarkChange = !bookmarkStatus
+                }
+            ) {
+
+                Icon(
+                    painter = if (bookmarkStatus) {
+                        painterResource(R.drawable.ic_bookmarked_white)
+                    } else {
+                        painterResource(R.drawable.ic_bookmark_white)
+                    },
+                    contentDescription = "Bookmark Icon",
+                )
             }
         }
     }
-
-//@Preview(showBackground = true)
-//@Composable
-//fun HistoryItemPreview(){
-//    FruturityTheme {
-//        MyItems(
-//            fruitsId = 0,
-//            ripeness = "matang" ,
-//            image = R.drawable.image_test,
-//            category = "banana" ,
-//            date = "12/01/2003",
-////            onClick = {},
-//            bookmarkStatus = false,
-//            updateBookmarkStatus = {}
-//        )
-//    }
-//}
+}
