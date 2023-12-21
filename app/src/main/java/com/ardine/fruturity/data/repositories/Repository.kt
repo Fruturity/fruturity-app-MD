@@ -2,11 +2,16 @@ package com.ardine.fruturity.data.repositories
 
 import com.ardine.fruturity.data.ResultState
 import com.ardine.fruturity.data.api.ApiService
+import androidx.lifecycle.liveData
+import com.ardine.fruturity.data.api2.ApiService2
 import com.ardine.fruturity.data.request.AddNoteRequest
 import com.ardine.fruturity.data.response.FruitResponse
 
+import okhttp3.MultipartBody
+
 class Repository private constructor(
     private val apiService: ApiService,
+    private val apiService2: ApiService2
 ){
     private  val historyFruits = mutableListOf<FruitResponse>()
     private  val bookmarkFruits = mutableListOf<FruitResponse>()
@@ -46,6 +51,34 @@ class Repository private constructor(
             ResultState.Error(e)
         }
     }
+
+    //upload image
+//    suspend fun uploadImagePrediction(
+//        imageFile : MultipartBody.Part
+//    ) : ResultState<UploadImagePredectionResponse>{
+//        return withContext(Dispatchers.IO){
+//            try {
+//                val response = apiService.uploadImagePredict(imageFile)
+//                ResultState.Success(response)
+//            }catch (e : Exception){
+//                ResultState.Error(e)
+//            }
+//        }
+//    }
+
+    fun uploadImagePredection(
+        imageFile : MultipartBody.Part
+    ) = liveData {
+    emit(ResultState.Loading)
+        try {
+            val response = apiService2.uploadImagePredict(imageFile)
+            emit(ResultState.Success(response))
+        }catch (e : Exception){
+            emit(ResultState.Error(e))
+        }
+    }
+
+
 
 //    suspend fun deleteFruitById(id: String): Result<String> {
 //        return try {
@@ -122,9 +155,10 @@ class Repository private constructor(
 
         fun getInstance(
             apiService: ApiService,
+            apiService2: ApiService2
         ): Repository =
             instance ?: synchronized(this) {
-                Repository(apiService).apply {
+                Repository(apiService,apiService2).apply {
                     instance = this
                 }
             }

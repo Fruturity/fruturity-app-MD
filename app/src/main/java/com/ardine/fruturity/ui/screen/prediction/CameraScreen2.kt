@@ -1,45 +1,29 @@
-package com.ardine.fruturity.ui.screen.camera
+package com.ardine.fruturity.ui.screen.prediction
 
 import android.Manifest
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.graphics.Bitmap
-import android.graphics.ImageDecoder
 import android.net.Uri
-import android.os.Build
-import android.provider.MediaStore
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CameraAlt
-import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Photo
 import androidx.compose.material.icons.filled.Stream
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonColors
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -50,29 +34,33 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
-import coil.compose.AsyncImage
-import coil.compose.rememberAsyncImagePainter
+import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.rememberImagePainter
-import com.ardine.fruturity.MainActivity
-import com.ardine.fruturity.R
+import com.ardine.fruturity.di.Injection
+import com.ardine.fruturity.ui.ViewModelFactory
 import com.ardine.fruturity.ui.components.ButtonCamera
 import com.ardine.fruturity.ui.components.ButtonDetection
+import com.ardine.fruturity.ui.screen.camera.CameraRealTimeActivity
+import com.ardine.fruturity.ui.screen.history.HistoryViewModel
 import com.ardine.fruturity.ui.screen.result.ResultActivity
 import com.ardine.fruturity.ui.theme.FruturityTheme
+import okhttp3.MultipartBody
+import okhttp3.RequestBody.Companion.asRequestBody
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Objects
 
 @Composable
-fun ImageCapture(
-    modifier: Modifier = Modifier
+fun CameraScreen(
+    modifier: Modifier = Modifier,
+    viewModel: CameraViewModel = viewModel(
+        factory = ViewModelFactory(Injection.provideRepository())
+    )
 ) {
 
     val context = LocalContext.current
@@ -218,7 +206,14 @@ fun ImageCapture(
             val context = LocalContext.current
             ButtonDetection(
                 onClick = {
-                    context.startActivity(Intent(context, ResultActivity::class.java))
+                    if(capturedImageUri.path?.isNotEmpty()==true){
+                        val imageFile = File(capturedImageUri.path!!)
+                        val imagePart = MultipartBody.Part.createFormData("image", imageFile.name, imageFile.asRequestBody())
+                        viewModel.uploadImagePredict(imagePart)
+                    }else{
+                        Toast.makeText(context, "Capture an image first", Toast.LENGTH_SHORT).show()                    }
+                    //context.startActivity(Intent(context, ResultActivity::class.java))
+                    Toast.makeText(context, "Image Uploaded Successfully!", Toast.LENGTH_SHORT).show()
                 },
                 text = "Start Detection!!"
             )
@@ -244,6 +239,6 @@ fun Context.createImageFile(): File {
 @Composable
 fun ImagerCapturePreview(){
     FruturityTheme {
-        ImageCapture()
+        CameraScreen()
     }
 }
