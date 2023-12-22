@@ -17,7 +17,8 @@ class CameraxActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             FruturityTheme {
-                CameraContent(viewModel = cameraViewModel)
+//                CameraContent(viewModel = cameraViewModel)
+                CameraContent()
             }
         }
     }

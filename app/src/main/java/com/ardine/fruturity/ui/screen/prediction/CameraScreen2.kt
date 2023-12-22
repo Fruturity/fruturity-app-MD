@@ -169,7 +169,7 @@
 //        )
 
         var capturedImageUri by remember {
-            mutableStateOf<Uri>(Uri.EMPTY)
+            mutableStateOf<Uri?>(null)
         }
 
     //    var imageUri by remember {
@@ -268,7 +268,7 @@
 //                    contentDescription = null
 //                )
 //            }
-            if (capturedImageUri.path?.isNotEmpty() == true) {
+            if (capturedImageUri?.path?.isNotEmpty() == true) {
                 AsyncImage(
                     model = capturedImageUri,
                     modifier = Modifier
@@ -279,7 +279,7 @@
                     contentDescription = "LogoApp",
                     contentScale = ContentScale.Fit
                 )
-            } else if (capturedImageUri.path?.isEmpty() == true) {
+            } else if (capturedImageUri?.path?.isEmpty() == true) {
                 Image(
                     imageVector = Icons.Default.Photo,
 //                    painter = painterResource(id = R.drawable.logoapp),
@@ -370,7 +370,7 @@
 ////                                imageFile.name,
 ////                                imageFile.asRequestBody())
 //                           onUploadImage(imagePart)
-                        val imageFile = context.uriToFile(capturedImageUri, context).reduceFileImage()
+                        val imageFile = context.uriToFile(capturedImageUri!!, context).reduceFileImage()
                         viewModel.uploadImagePredict(imageFile)
                         Log.d("image_file_fruturtyrufwsfse","$imageFile")
 //                        }else{
