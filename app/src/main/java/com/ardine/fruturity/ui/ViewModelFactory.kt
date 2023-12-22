@@ -2,7 +2,7 @@ package com.ardine.fruturity.ui
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.ardine.fruturity.repositories.Repository
+import com.ardine.fruturity.data.repositories.Repository
 import com.ardine.fruturity.ui.screen.bookmark.BookmarkViewModel
 import com.ardine.fruturity.ui.screen.detail.DetailViewModel
 import com.ardine.fruturity.ui.screen.history.HistoryViewModel

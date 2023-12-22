@@ -10,9 +10,9 @@ import com.ardine.fruturity.ui.theme.FruturityTheme
 
 class CameraxActivity : ComponentActivity() {
 
-    private val cameraViewModel : CameraViewModel by viewModels {
-        ViewModelFactory(Injection.provideRepository())
-    }
+//    private val cameraViewModel : CameraViewModel by viewModels {
+//        ViewModelFactory(Injection.provideRepository())
+//    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
