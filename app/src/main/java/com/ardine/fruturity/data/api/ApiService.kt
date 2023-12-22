@@ -1,8 +1,6 @@
 package com.ardine.fruturity.data.api
 
-import com.ardine.fruturity.data.request.AddNoteRequest
 import com.ardine.fruturity.data.request.UpdateBookmarkRequest
-import com.ardine.fruturity.data.response.AddNoteResponse
 import com.ardine.fruturity.data.response.BookmarkResponse
 import com.ardine.fruturity.data.response.FruitResponse
 import retrofit2.http.Body
@@ -33,16 +31,9 @@ interface ApiService {
         @Body request: UpdateBookmarkRequest,
     ): BookmarkResponse
 
-    //ADD NOTES
-    @POST("/fruit/{id}/add/note")
-    fun addNoteToFruit(
-        @Path("id") id: String,
-        @Body request: AddNoteRequest
-    ): AddNoteResponse
-
     @DELETE("/fruit/delete/{id}")
-    suspend fun deleteFruitById(
+    fun deleteFruitById(
         @Path("id") id: String
-    ): AddNoteResponse
+    ): FruitResponse
 
 }

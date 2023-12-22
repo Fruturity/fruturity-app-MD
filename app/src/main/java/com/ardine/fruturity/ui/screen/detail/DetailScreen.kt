@@ -16,11 +16,8 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.IconButton
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.Check
-import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
@@ -32,10 +29,6 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -84,9 +77,6 @@ fun DetailScreen(
                 DetailContent(
                     fruits = resultState.data,
                     onBackClick = navigateBack,
-                    saveNotes = { id, note ->
-                        viewModel.addNoteToFruit(id, note)
-                    }
                 )
             }
             is ResultState.Error -> {
@@ -103,12 +93,9 @@ fun DetailScreen(
 fun DetailContent(
     fruits: FruitResponse,
     onBackClick: () -> Unit,
-    saveNotes: (String, String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val colorTheme = MaterialTheme.colorScheme.primary
-    var isEditMode by remember { mutableStateOf(false) }
-    var editedText by remember { mutableStateOf(fruits.notes ?: "") }
 
     Scaffold(
         topBar = {
@@ -134,42 +121,6 @@ fun DetailContent(
                             .clickable { onBackClick() },
                         tint = colorTheme
                     )
-                },
-                actions = {
-                    if (isEditMode == false){
-                        Icon(
-                            imageVector = Icons.Default.Edit,
-                            contentDescription = stringResource(R.string.edit),
-                            modifier = Modifier
-                                .padding(16.dp)
-                                .clickable { isEditMode = !isEditMode },
-                            tint = colorTheme,
-                        )
-                    } else {
-                        IconButton(
-                            onClick = {
-                                isEditMode = !isEditMode
-                                if (!isEditMode) {
-                                    saveNotes(fruits.id, editedText)
-                                }
-                            }
-                        ) {
-                            Icon(
-                                imageVector = Icons.Default.Check,
-                                contentDescription = stringResource(R.string.save),
-                                modifier = Modifier
-                                    .padding(16.dp)
-                                    .clickable {
-                                        isEditMode = !isEditMode
-                                        if (!isEditMode) {
-                                            saveNotes(fruits.id, editedText)
-                                        }
-                                    },
-                                tint = colorTheme,
-                            )
-                        }
-                    }
-
                 },
                 modifier = Modifier.fillMaxWidth(),
             )
@@ -271,49 +222,6 @@ fun DetailContent(
                     }
 
                     Spacer(modifier = Modifier.height(16.dp))
-
-//                    Card(
-//                        modifier = modifier
-//                            .fillMaxWidth()
-//                            .height(200.dp)
-//                            .padding(16.dp)
-//                            .verticalScroll(rememberScrollState())
-//                    ) {
-//                        if (isEditMode) {
-//                            val focusRequester = remember { FocusRequester() }
-//                            BasicTextField(
-//                                value = editedText,
-//                                onValueChange = { newValue ->
-//                                    editedText = newValue
-//                                },
-//                                textStyle = MaterialTheme.typography.bodyMedium,
-//                                modifier = Modifier
-//                                    .padding(16.dp)
-//                                    .fillMaxWidth()
-//                                    .focusRequester(focusRequester)
-//                            )
-//
-//                            LaunchedEffect(isEditMode) {
-//                                if (isEditMode) {
-//                                    focusRequester.requestFocus()
-//                                }
-//                            }
-//                        } else {
-//                            if (fruits.notes != null) {
-//                                Log.d("KASDSA", fruits.notes)
-//                            } else {
-//                                Log.d("KASDSA", "Notes is null")
-//                            }
-//                            Text(
-//                                text = fruits.notes ?: "",
-//                                style = MaterialTheme.typography.bodyMedium.copy(
-//                                    fontWeight = FontWeight.Bold,
-//                                    fontSize = 12.sp
-//                                ),
-//                                modifier = Modifier.padding(16.dp)
-//                            )
-//                        }
-//                    }
                 }
             }
         }
