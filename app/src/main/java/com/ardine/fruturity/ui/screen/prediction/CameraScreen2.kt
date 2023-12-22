@@ -31,7 +31,6 @@
     import androidx.compose.material3.CircularProgressIndicator
     import androidx.compose.runtime.Composable
     import androidx.compose.runtime.getValue
-    import androidx.compose.runtime.livedata.observeAsState
     import androidx.compose.runtime.mutableStateOf
     import androidx.compose.runtime.remember
     import androidx.compose.runtime.setValue
@@ -46,7 +45,7 @@
     import androidx.lifecycle.viewmodel.compose.viewModel
     import coil.compose.AsyncImage
     import com.ardine.fruturity.data.ResultState
-    import com.ardine.fruturity.di.Injection2
+    import com.ardine.fruturity.di.Injection
     import com.ardine.fruturity.ui.ViewModelFactory
     import com.ardine.fruturity.ui.components.ButtonCamera
     import com.ardine.fruturity.ui.components.ButtonDetection
@@ -114,7 +113,7 @@
        // uploadImageState : ResultState<UploadImagePredectionResponse>?,
        // onUploadImage : (MultipartBody.Part) -> Unit
         viewModel: CameraViewModel = viewModel(
-            factory = ViewModelFactory(Injection2.provideRepository())
+            factory = ViewModelFactory(Injection.provideRepository())
         ),
         context: Context = LocalContext.current,
     ) {

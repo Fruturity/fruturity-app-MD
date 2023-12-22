@@ -6,7 +6,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asFlow
 import androidx.lifecycle.viewModelScope
 import com.ardine.fruturity.data.ResultState
-import com.ardine.fruturity.data.repositories.Repository
 import com.ardine.fruturity.data.response.UploadImagePredectionResponse
 import com.ardine.fruturity.repositories.Repository
 import kotlinx.coroutines.launch
