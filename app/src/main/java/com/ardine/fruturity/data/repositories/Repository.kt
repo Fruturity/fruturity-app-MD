@@ -75,7 +75,7 @@ class Repository private constructor(
 //        val file = MultipartBody.Part.createFormData(
 //            "file",image.name,requestFile
 //        )
-    emit(ResultState.Loading)
+        emit(ResultState.Loading)
         try {
             val response = apiService2.uploadImagePredict(imageFile)
             emit(ResultState.Success(response))
@@ -94,7 +94,7 @@ class Repository private constructor(
             val successResponse = apiService2.uploadImagePredict(file)
             emit(ResultState.Success(successResponse))
         } catch (e: Exception) {
-           // Log.e("Camera view Model", "Error", e)
+            // Log.e("Camera view Model", "Error", e)
             emit(ResultState.Error("Error ${e.message.toString()}"))
         }
     }
