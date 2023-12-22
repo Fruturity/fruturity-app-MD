@@ -1,6 +1,6 @@
 //package com.ardine.fruturity.data.response
 //
-//import com.ardine.fruturity.data.local.FruitBookmark
+//import com.ardine.fruturity.data.local.entity.FruitBookmark
 //
 //object DataDummy {
 //    val dummyFruits = listOf(

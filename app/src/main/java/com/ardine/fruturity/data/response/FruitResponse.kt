@@ -12,8 +12,8 @@ data class FruitResponse(
 	@field:SerializedName("image")
 	val image: String,
 
-	@field:SerializedName("isBookmark")
-	val isBookmark: Boolean,
+	@field:SerializedName("bookmark")
+	var isBookmark: Boolean,
 
 	@field:SerializedName("ripeness")
 	val ripeness: String,
