@@ -35,45 +35,44 @@ fun BookmarkScreen(
     ),
     navigateToDetail: (String) -> Unit,
 ) {
-    viewModel.resultState.collectAsState(initial = ResultState.Loading).value.let { resultState ->
-        when (resultState) {
-            is ResultState.Loading -> {
-                viewModel.getAllBookmarkFruits()
-                Box(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(16.dp),
-                    contentAlignment = Alignment.Center
-                ) {
-                    CircularProgressIndicator(
-                        modifier = Modifier.size(40.dp)
-                    )
-                }
-            }
-            is ResultState.Success -> {
-                BookmarkContent(
-                    fruits = resultState.data,
-                    updateBookmarkStatus = { fruitId, newStatus ->
-                        viewModel.updateBookmarkStatus(fruitId, newStatus)
-                    },
-                    navigateToDetail = navigateToDetail,
-                    modifier = modifier,
+    val resultState = viewModel.resultState.collectAsState().value
+    viewModel.getAllBookmarkFruits()
+    when (resultState) {
+        is ResultState.Loading -> {
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(16.dp),
+                contentAlignment = Alignment.Center
+            ) {
+                CircularProgressIndicator(
+                    modifier = Modifier.size(40.dp)
                 )
             }
-            is ResultState.Error -> {
-                Box(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(16.dp),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Image(
-                        painter = painterResource(id = R.drawable.empty_img),
-                        contentDescription = "empty msg")
-                    Text(
-                        text = stringResource(R.string.empty_msg)
-                    )
-                }
+        }
+        is ResultState.Success -> {
+            BookmarkContent(
+                fruits = resultState.data,
+                updateBookmarkStatus = { fruitId, newStatus ->
+                    viewModel.updateBookmarkStatus(fruitId, newStatus)
+                },
+                navigateToDetail = navigateToDetail,
+                modifier = modifier,
+            )
+        }
+        is ResultState.Error -> {
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(16.dp),
+                contentAlignment = Alignment.Center
+            ) {
+                Image(
+                    painter = painterResource(id = R.drawable.empty_img),
+                    contentDescription = "empty msg")
+                Text(
+                    text = stringResource(R.string.empty_msg)
+                )
             }
         }
     }
@@ -86,7 +85,9 @@ fun BookmarkContent(
     updateBookmarkStatus :(String,Boolean) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    Column {
+    Column (
+        modifier = modifier
+    ) {
         if (fruits.isEmpty()) {
             Text(
                 modifier = modifier.padding(8.dp),

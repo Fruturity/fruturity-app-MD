@@ -2,9 +2,9 @@ package com.ardine.fruturity.ui.screen.bookmark
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.ardine.fruturity.data.repositories.Repository
 import com.ardine.fruturity.data.ResultState
 import com.ardine.fruturity.data.response.FruitResponse
+import com.ardine.fruturity.repositories.Repository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -15,6 +15,7 @@ class BookmarkViewModel(private val repository: Repository) : ViewModel() {
 
     fun updateBookmarkStatus(fruitId: String, newStatus: Boolean) {
         viewModelScope.launch {
+            _resultState.value = ResultState.Loading
             repository.updateBookmarkStatus(fruitId, newStatus)
         }
     }

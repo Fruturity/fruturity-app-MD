@@ -45,13 +45,14 @@ fun HomeScreen (
         verticalArrangement = Arrangement.Center
     ) {
         Image(
-            painter = painterResource(id = R.drawable.logo),
+            painter = painterResource(id = R.drawable.ic_icon2),
             contentDescription = "Logo",
             contentScale = ContentScale.Crop,
             modifier = modifier
-                .height(180.dp)
+                .size(300.dp)
                 .fillMaxWidth()
                 .padding(16.dp)
+                .clip(CircleShape)
         )
         Text(
             text = stringResource(R.string.hi_it_s_fruturity),
@@ -89,6 +90,7 @@ fun HomeScreen (
         ) {
             val mCOntext = LocalContext.current
             Button(
+                modifier = modifier,
                 onClick = {
                     mCOntext.startActivity(Intent(mCOntext, CameraxActivity::class.java))
                 },
@@ -97,14 +99,12 @@ fun HomeScreen (
                 Image(
                     painter = painterResource(id = R.drawable.ic_scan),
                     contentDescription = null ,
-                    modifier = Modifier
-                        .fillMaxWidth(2f)
-                        .fillMaxHeight(2f)
+                    modifier = modifier
                         .size(100.dp)
+                        .fillMaxWidth()
+                        .fillMaxHeight()
                 )
-
             }
         }
-
     }
 }

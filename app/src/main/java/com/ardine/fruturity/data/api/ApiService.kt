@@ -35,7 +35,7 @@ interface ApiService {
 
     //ADD NOTES
     @POST("/fruit/{id}/add/note")
-    suspend fun addNoteToFruit(
+    fun addNoteToFruit(
         @Path("id") id: String,
         @Body request: AddNoteRequest
     ): AddNoteResponse
@@ -44,6 +44,5 @@ interface ApiService {
     suspend fun deleteFruitById(
         @Path("id") id: String
     ): AddNoteResponse
-
 
 }

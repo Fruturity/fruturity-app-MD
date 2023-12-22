@@ -1,5 +1,6 @@
 package com.ardine.fruturity.ui.screen.detail
 
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -17,6 +18,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.IconButton
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Check
@@ -87,12 +89,16 @@ fun DetailScreen(
                 DetailContent(
                     fruits = resultState.data,
                     onBackClick = navigateBack,
+                    saveNotes = { id, note ->
+                        viewModel.addNoteToFruit(id, note)
+                    }
                 )
             }
             is ResultState.Error -> {
                 Toast.makeText(LocalContext.current,R.string.empty_msg, Toast.LENGTH_SHORT).show()
             }
 
+            else -> {}
         }
     }
 }
@@ -102,6 +108,7 @@ fun DetailScreen(
 fun DetailContent(
     fruits: FruitResponse,
     onBackClick: () -> Unit,
+    saveNotes: (String, String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val colorTheme = MaterialTheme.colorScheme.primary
@@ -144,16 +151,28 @@ fun DetailContent(
                             tint = colorTheme,
                         )
                     } else {
-                        Icon(
-                            imageVector = Icons.Default.Check,
-                            contentDescription = stringResource(R.string.save),
-                            modifier = Modifier
-                                .padding(16.dp)
-                                .clickable {
-                                    isEditMode = !isEditMode
-                                },
-                            tint = colorTheme,
-                        )
+                        IconButton(
+                            onClick = {
+                                isEditMode = !isEditMode
+                                if (!isEditMode) {
+                                    saveNotes(fruits.id, editedText)
+                                }
+                            }
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.Check,
+                                contentDescription = stringResource(R.string.save),
+                                modifier = Modifier
+                                    .padding(16.dp)
+                                    .clickable {
+                                        isEditMode = !isEditMode
+                                        if (!isEditMode) {
+                                            saveNotes(fruits.id, editedText)
+                                        }
+                                    },
+                                tint = colorTheme,
+                            )
+                        }
                     }
 
                 },
@@ -181,16 +200,6 @@ fun DetailContent(
                         .size(200.dp)
                         .clip(CircleShape)
                 )
-//                val painter = rememberImagePainter(data = fruits.imageUrl)
-//                Image(
-//                    painter = R.drawable.ic_scan,
-//                    contentDescription = null,
-//                    contentScale = ContentScale.Crop,
-//                    modifier = Modifier
-//                        .size(150.dp)
-//                        .clip(CircleShape)
-//                )
-
                 Spacer(modifier = Modifier.height(16.dp))
             }
 
@@ -295,8 +304,17 @@ fun DetailContent(
                                 }
                             }
                         } else {
+                            if (fruits.notes != null) {
+                                Log.d("KASDSA", fruits.notes)
+                            } else {
+                                Log.d("KASDSA", "Notes is null")
+                            }
                             Text(
                                 text = fruits.notes ?: "",
+                                style = MaterialTheme.typography.bodyMedium.copy(
+                                    fontWeight = FontWeight.Bold,
+                                    fontSize = 12.sp
+                                ),
                                 modifier = Modifier.padding(16.dp)
                             )
                         }

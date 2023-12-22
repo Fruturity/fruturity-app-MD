@@ -1,6 +1,5 @@
 package com.ardine.fruturity.ui.components
 
-import android.util.Log
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -91,8 +90,6 @@ fun MyItems(
                     modifier = modifier.padding(vertical = 2.dp)
                 )
             }
-            Log.d("BOOOKMAR", "$bookmarkStatus")
-
             IconButton(
                 onClick = {
                     updateBookmarkStatus(fruitsId, !bookmarkStatus)

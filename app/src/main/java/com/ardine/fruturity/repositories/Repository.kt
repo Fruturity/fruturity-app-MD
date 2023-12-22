@@ -1,9 +1,10 @@
-package com.ardine.fruturity.data.repositories
+package com.ardine.fruturity.repositories
 
 import com.ardine.fruturity.data.ResultState
 import com.ardine.fruturity.data.api.ApiService
 import com.ardine.fruturity.data.request.AddNoteRequest
 import com.ardine.fruturity.data.request.UpdateBookmarkRequest
+import com.ardine.fruturity.data.response.AddNoteResponse
 import com.ardine.fruturity.data.response.FruitResponse
 
 class Repository private constructor(
@@ -30,15 +31,21 @@ class Repository private constructor(
         return apiService.getFruitById(id)
     }
 
-    suspend fun addNoteToFruit(id: String, note: String): ResultState<String> {
+    fun addNoteToFruit(id: String, note: String): ResultState<AddNoteResponse> {
         return try {
-            val request = AddNoteRequest(note)
-            val response = apiService.addNoteToFruit(id, request)
-            ResultState.Success(response.message)
+            val response = apiService.addNoteToFruit(id, AddNoteRequest(note))
+            ResultState.Success(response)
         } catch (e: Exception) {
             ResultState.Error(e)
         }
     }
+
+//
+//    fun addNoteToFruit(id: String, note: String): FruitResponse {
+//        val request = AddNoteRequest(note)
+//        return apiService.addNoteToFruit(id, request)
+//    }
+
 
 //    suspend fun deleteFruitById(id: String): Result<String> {
 //        return try {

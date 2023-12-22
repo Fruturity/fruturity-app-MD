@@ -36,10 +36,9 @@ fun HistoryScreen(
     navigateToDetail: (String) -> Unit,
 ) {
     val resultState = viewModel.resultState.collectAsState().value
-
+    viewModel.getAllFruits()
     when (resultState) {
         is ResultState.Loading -> {
-            viewModel.getAllFruits()
             Box(
                 modifier = modifier
                     .fillMaxSize()
@@ -87,7 +86,9 @@ fun HistoryContent (
     updateBookmarkStatus :(String,Boolean) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    Column {
+    Column (
+        modifier = modifier
+    ){
         if (fruits.isEmpty()) {
             Text(
                 modifier = modifier,

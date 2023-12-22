@@ -1,5 +1,6 @@
 package com.ardine.fruturity
 
+import Screen
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Bookmark
@@ -13,6 +14,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
@@ -27,6 +29,7 @@ import com.ardine.fruturity.ui.screen.bookmark.BookmarkScreen
 import com.ardine.fruturity.ui.screen.detail.DetailScreen
 import com.ardine.fruturity.ui.screen.history.HistoryScreen
 import com.ardine.fruturity.ui.screen.Home.HomeScreen
+import com.ardine.fruturity.ui.screen.splash.SplashScreen
 import com.ardine.fruturity.ui.theme.FruturityTheme
 
 @Composable
@@ -37,11 +40,11 @@ fun FruturityApp(
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
 
-    val isDetailScreen = currentRoute?.startsWith("detail") == true
+    val isSplashScreen = currentRoute?.startsWith("splash") == true
 
     Scaffold(
         bottomBar = {
-            if (!isDetailScreen) {
+            if (shouldShowBottomBar(currentRoute, isSplashScreen)) {
                 BottomBar(navController)
             }
         },
@@ -49,10 +52,13 @@ fun FruturityApp(
     ) { innerPadding ->
         NavHost(
             navController = navController,
-            startDestination = Screen.Home.route,
+            startDestination = Screen.Splash.route,
             modifier = modifier
                 .padding(innerPadding)
         ) {
+            composable(Screen.Splash.route){
+                SplashScreen(navController)
+            }
             composable(Screen.Home.route){
                 HomeScreen()
             }
@@ -110,17 +116,17 @@ private fun BottomBar(
         val currentRoute = navBackStackEntry?.destination?.route
         val navigationItems = listOf(
             NavigationItem(
-                title = "Home",
+                title = stringResource(R.string.home),
                 icon = Icons.Default.Home,
                 screen = Screen.Home
             ),
             NavigationItem(
-                title = "History",
+                title = stringResource(R.string.history),
                 icon = Icons.Default.Inventory,
                 screen = Screen.History
             ),
             NavigationItem(
-                title = "Bookmark",
+                title = stringResource(R.string.bookmark),
                 icon = Icons.Default.Bookmark,
                 screen = Screen.Bookmark
             )
@@ -147,6 +153,10 @@ private fun BottomBar(
             )
         }
     }
+}
+
+private fun shouldShowBottomBar(currentRoute: String?, isSplashScreen: Boolean): Boolean {
+    return currentRoute != Screen.Detail.route && !isSplashScreen
 }
 
 @Preview(showBackground = true)
