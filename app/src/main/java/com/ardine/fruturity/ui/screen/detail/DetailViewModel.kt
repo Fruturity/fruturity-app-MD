@@ -3,8 +3,8 @@ package com.ardine.fruturity.ui.screen.detail
 //import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.ardine.fruturity.data.repositories.Repository
 import com.ardine.fruturity.data.ResultState
+import com.ardine.fruturity.data.repositories.Repository
 import com.ardine.fruturity.data.response.FruitResponse
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -22,7 +22,7 @@ class DetailViewModel(private val repository: Repository) : ViewModel() {
                 val response = repository.getFruitById(id)
                 _resultState.value = ResultState.Success(response)
             } catch (e: Exception) {
-                _resultState.value = ResultState.Error(e)
+                _resultState.value = ResultState.Error("Error ${e.message.toString()}")
             }
         }
     }

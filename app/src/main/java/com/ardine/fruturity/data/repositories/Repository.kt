@@ -1,13 +1,15 @@
 package com.ardine.fruturity.data.repositories
 
+import androidx.lifecycle.liveData
 import com.ardine.fruturity.data.ResultState
 import com.ardine.fruturity.data.api.ApiService
-import androidx.lifecycle.liveData
 import com.ardine.fruturity.data.api2.ApiService2
 import com.ardine.fruturity.data.request.AddNoteRequest
 import com.ardine.fruturity.data.response.FruitResponse
-
+import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.MultipartBody
+import okhttp3.RequestBody.Companion.asRequestBody
+import java.io.File
 
 class Repository private constructor(
     private val apiService: ApiService,
@@ -48,7 +50,7 @@ class Repository private constructor(
             val response = apiService.addNoteToFruit(id, request)
             ResultState.Success(response.message)
         } catch (e: Exception) {
-            ResultState.Error(e)
+            ResultState.Error("Error ${e.message.toString()}")
         }
     }
 
@@ -66,17 +68,37 @@ class Repository private constructor(
 //        }
 //    }
 
-    fun uploadImagePredection(
-        imageFile : MultipartBody.Part
-    ) = liveData {
-    emit(ResultState.Loading)
+//    fun uploadImagePredection(
+//        imageFile : MultipartBody.Part
+//    ) = liveData {
+////        val requestFile = imageFile.asRequestBody("file/jpg".toMediaType())
+////        val file = MultipartBody.Part.createFormData(
+////            "file",image.name,requestFile
+////        )
+//    emit(ResultState.Loading)
+//        try {
+//            val response = apiService2.uploadImagePredict(imageFile)
+//            emit(ResultState.Success(response))
+//        }catch (e : Exception){
+//            emit(ResultState.Error("Error ${e.message.toString()}"))
+//        }
+//    }
+
+    fun uploadImage(image: File) = liveData {
+        emit(ResultState.Loading)
+        val requestFile = image.asRequestBody("image/jpg".toMediaType())
+        val file = MultipartBody.Part.createFormData(
+            "image", image.name, requestFile
+        )
         try {
-            val response = apiService2.uploadImagePredict(imageFile)
-            emit(ResultState.Success(response))
-        }catch (e : Exception){
-            emit(ResultState.Error(e))
+            val successResponse = apiService2.uploadImagePredict(file)
+            emit(ResultState.Success(successResponse))
+        } catch (e: Exception) {
+           // Log.e("Camera view Model", "Error", e)
+            emit(ResultState.Error("Error ${e.message.toString()}"))
         }
     }
+
 
 
 
