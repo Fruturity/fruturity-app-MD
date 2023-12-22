@@ -1,5 +1,6 @@
 package com.ardine.fruturity.ui.screen.detail
 
+//import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ardine.fruturity.repositories.Repository
@@ -27,7 +28,7 @@ class DetailViewModel(private val repository: Repository) : ViewModel() {
                 val response = repository.getFruitById(id)
                 _resultState.value = ResultState.Success(response)
             } catch (e: Exception) {
-                _resultState.value = ResultState.Error(e)
+                _resultState.value = ResultState.Error("Error ${e.message.toString()}")
             }
         }
     }
@@ -44,7 +45,7 @@ class DetailViewModel(private val repository: Repository) : ViewModel() {
                     _noteState.value = response
                 }
             } catch (e: Exception) {
-                _noteState.value = ResultState.Error(e)
+                _noteState.value = ResultState.Error("Error ${e.message.toString()}")
             }
         }
     }

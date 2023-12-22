@@ -30,7 +30,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.ardine.fruturity.R
-import com.ardine.fruturity.ui.screen.camera.CameraxActivity
+import com.ardine.fruturity.ui.screen.prediction.CameraxActivity
 
 @Composable
 fun HomeScreen (
