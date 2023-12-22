@@ -1,4 +1,5 @@
 package com.ardine.fruturity.ui.screen.utils
+
 import android.content.ContentValues
 import android.content.Context
 import android.graphics.Bitmap
