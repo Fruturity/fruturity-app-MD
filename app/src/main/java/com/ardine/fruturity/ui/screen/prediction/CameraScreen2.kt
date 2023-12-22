@@ -46,7 +46,7 @@
     import androidx.lifecycle.viewmodel.compose.viewModel
     import coil.compose.AsyncImage
     import com.ardine.fruturity.data.ResultState
-    import com.ardine.fruturity.di.Injection2
+    import com.ardine.fruturity.di.Injection
     import com.ardine.fruturity.ui.ViewModelFactory
     import com.ardine.fruturity.ui.components.ButtonCamera
     import com.ardine.fruturity.ui.components.ButtonDetection
@@ -114,7 +114,7 @@
        // uploadImageState : ResultState<UploadImagePredectionResponse>?,
        // onUploadImage : (MultipartBody.Part) -> Unit
         viewModel: CameraViewModel = viewModel(
-            factory = ViewModelFactory(Injection2.provideRepository())
+            factory = ViewModelFactory(Injection.provideRepository())
         ),
         context: Context = LocalContext.current,
     ) {
@@ -170,7 +170,7 @@
 //        )
 
         var capturedImageUri by remember {
-            mutableStateOf<Uri>(Uri.EMPTY)
+            mutableStateOf<Uri?>(null)
         }
 
     //    var imageUri by remember {
@@ -269,7 +269,7 @@
 //                    contentDescription = null
 //                )
 //            }
-            if (capturedImageUri.path?.isNotEmpty() == true) {
+            if (capturedImageUri?.path?.isNotEmpty() == true) {
                 AsyncImage(
                     model = capturedImageUri,
                     modifier = Modifier
@@ -280,7 +280,7 @@
                     contentDescription = "LogoApp",
                     contentScale = ContentScale.Fit
                 )
-            } else if (capturedImageUri.path?.isEmpty() == true) {
+            } else if (capturedImageUri?.path?.isEmpty() == true) {
                 Image(
                     imageVector = Icons.Default.Photo,
 //                    painter = painterResource(id = R.drawable.logoapp),
@@ -371,7 +371,7 @@
 ////                                imageFile.name,
 ////                                imageFile.asRequestBody())
 //                           onUploadImage(imagePart)
-                        val imageFile = context.uriToFile(capturedImageUri, context).reduceFileImage()
+                        val imageFile = context.uriToFile(capturedImageUri!!, context).reduceFileImage()
                         viewModel.uploadImagePredict(imageFile)
                         Log.d("image_file_fruturtyrufwsfse","$imageFile")
 //                        }else{
