@@ -68,21 +68,21 @@ class Repository private constructor(
 //        }
 //    }
 
-//    fun uploadImagePredection(
-//        imageFile : MultipartBody.Part
-//    ) = liveData {
-////        val requestFile = imageFile.asRequestBody("file/jpg".toMediaType())
-////        val file = MultipartBody.Part.createFormData(
-////            "file",image.name,requestFile
-////        )
-//    emit(ResultState.Loading)
-//        try {
-//            val response = apiService2.uploadImagePredict(imageFile)
-//            emit(ResultState.Success(response))
-//        }catch (e : Exception){
-//            emit(ResultState.Error("Error ${e.message.toString()}"))
-//        }
-//    }
+    fun uploadImagePredection(
+        imageFile : MultipartBody.Part
+    ) = liveData {
+//        val requestFile = imageFile.asRequestBody("file/jpg".toMediaType())
+//        val file = MultipartBody.Part.createFormData(
+//            "file",image.name,requestFile
+//        )
+    emit(ResultState.Loading)
+        try {
+            val response = apiService2.uploadImagePredict(imageFile)
+            emit(ResultState.Success(response))
+        }catch (e : Exception){
+            emit(ResultState.Error("Error ${e.message.toString()}"))
+        }
+    }
 
     fun uploadImage(image: File) = liveData {
         emit(ResultState.Loading)
