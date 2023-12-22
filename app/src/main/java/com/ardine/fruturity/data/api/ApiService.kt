@@ -1,51 +1,48 @@
 package com.ardine.fruturity.data.api
 
 import com.ardine.fruturity.data.request.AddNoteRequest
+import com.ardine.fruturity.data.request.UpdateBookmarkRequest
 import com.ardine.fruturity.data.response.AddNoteResponse
 import com.ardine.fruturity.data.response.BookmarkResponse
 import com.ardine.fruturity.data.response.FruitResponse
-import com.ardine.fruturity.data.response.UploadImagePredectionResponse
-import okhttp3.MultipartBody
 import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
-import retrofit2.http.Multipart
 import retrofit2.http.POST
-import retrofit2.http.Part
 import retrofit2.http.Path
 
 interface ApiService {
 
+    //HISTORY
     @GET("/fruit/get")
     suspend fun getFruits(): List<FruitResponse>
 
+    //DETAIL
     @GET("/fruit/{id}")
     suspend fun getFruitById(
         @Path("id") id: String
     ): FruitResponse
 
+    //BOOKMARK
     @GET("/fruit/bookmark")
     suspend fun getBookmarkedFruits(): List<FruitResponse>
 
     @POST("/fruit/{id}/bookmark")
-    suspend fun bookmarkFruit(
-        @Path("id") fruitId: String
-        ): BookmarkResponse
+    suspend fun updateFruitBookmarked(
+        @Path("id") id: String,
+        @Body request: UpdateBookmarkRequest,
+    ): BookmarkResponse
 
+    //ADD NOTES
     @POST("/fruit/{id}/add/note")
-    suspend fun addNoteToFruit(
+    fun addNoteToFruit(
         @Path("id") id: String,
         @Body request: AddNoteRequest
     ): AddNoteResponse
 
     @DELETE("/fruit/delete/{id}")
-    suspend fun deleteFruitById(@Path("id") id: String): AddNoteResponse
-
-    @Multipart
-    @POST("/prediction")
-    suspend fun uploadImagePredict(
-        @Part file: MultipartBody.Part
-    ): UploadImagePredectionResponse
-
+    suspend fun deleteFruitById(
+        @Path("id") id: String
+    ): AddNoteResponse
 
 }
