@@ -14,5 +14,4 @@ interface ApiService2 {
         @Part image: MultipartBody.Part
     ): UploadImagePredectionResponse
 
-
 }

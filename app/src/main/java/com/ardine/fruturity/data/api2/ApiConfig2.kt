@@ -7,7 +7,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 object ApiConfig2 {
 
-    val BuildConfig = "https://fruturity-model-api-ekzxphlc2q-uc.a.run.app/prediction"
+    val BASE_URL2 = "https://fruturity-model-api-ekzxphlc2q-uc.a.run.app"
     fun getApiService(): ApiService2 {
         val loggingInterceptor =
             HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
@@ -16,7 +16,7 @@ object ApiConfig2 {
             .addInterceptor(loggingInterceptor)
             .build()
         val retrofit = Retrofit.Builder()
-            .baseUrl(BuildConfig)
+            .baseUrl(BASE_URL2)
             .addConverterFactory(GsonConverterFactory.create())
             .client(client)
             .build()
